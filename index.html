@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hung Lam | Premium Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <nav class="navbar hidden-animate-fade">
+        <div class="nav-logo">HL.</div>
+        <ul class="nav-links">
+            <div class="nav-indicator"></div>
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+            <li><a href="#contact">Contacts</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" id="about">
+        <div class="hero-content">
+            <p class="greeting animate-slide-up" style="--delay: 0.1s">INTRODUCTION</p>
+            <h1 class="animate-slide-up" style="--delay: 0.3s">Hello, I'm Hung Lam</h1>
+            <p class="tagline animate-slide-up" style="--delay: 0.5s">IT Student • Software Developer • Stoic Explorer</p>
+            
+            <div class="personal-info-card animate-slide-up" style="--delay: 0.7s">
+                <ul>
+                    <li><i class="fa-solid fa-user"></i> <strong>Gender:</strong> Male</li>
+                    <li><i class="fa-solid fa-calendar"></i> <strong>Date of Birth:</strong> September 22, 2007</li>
+                    <li><i class="fa-solid fa-graduation-cap"></i> <strong>Education:</strong> K26 Student at University of Science (HCMUS)</li>
+                    <li><i class="fa-solid fa-code"></i> <strong>Expertise:</strong> Computer Science, C/C++, English, Chinese</li>
+                </ul>
+            </div>
+            
+            <a href="#experience" class="btn-primary animate-slide-up" style="--delay: 0.9s">Explore My Journey</a>
+        </div>
+    </header>
+
+    <section id="education" class="section scroll-animate">
+        <h2 class="section-title">Academic Background</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Industrial University of Ho Chi Minh City (IUH)</h3>
+                <span class="date">August, 2025</span>
+                <p>Majoring in Computer Science & Information Technology. Specialized focus on Data Structures and Algorithms utilizing C/C++.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>ICPC Vietnam National Contest</h3>
+                <span class="date">November, 2025</span>
+                <p>Participated in intensive competitive programming and algorithmic challenges alongside the university's elite team.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Future Academic Orientation</h3>
+                <span class="date">Upcoming</span>
+                <p>Conducting in-depth research and mapping a structured academic pathway toward the University of Science (HCMUS).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section bg-darker scroll-animate">
+        <h2 class="section-title">Extracurricular & Projects</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Promotional Campaign for "Tài" Short Film</h3>
+                <span class="date">Early 2026</span>
+                <p>Directed scriptwriting, managed Public Relations content, and executed professional video editing for the film's media campaign.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Web Development & System Programming</h3>
+                <span class="date">Personal Initiatives</span>
+                <p>Architecting optimized algorithms in C/C++, exploring deep system architectures, and implementing independent software development lifecycles.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Language Proficiency Pursuit</h3>
+                <span class="date">English & Mandarin</span>
+                <p>Actively advancing linguistic capabilities, currently undertaking studies for HSK 4 and IELTS 8.0 certifications.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="section scroll-animate">
+        <h2 class="section-title">Key Achievements</h2>
+        <p class="section-desc">Milestones in my academic and personal development journey.</p>
+        
+        <div class="achievements-grid">
+            <div class="achievement-card">
+                <div class="ach-icon"><i class="fa-solid fa-language"></i></div>
+                <h3>IELTS 7.5</h3>
+                <p>Advanced English Proficiency</p>
+            </div>
+            <div class="achievement-card">
+                <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
+                <h3>ICPC National</h3>
+                <p>Vietnam National Contest Participant</p>
+            </div>
+            <div class="achievement-card">
+                <div class="ach-icon"><i class="fa-solid fa-yin-yang"></i></div>
+                <h3>HSK 3</h3>
+                <p>Mandarin Chinese Certification</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section bg-darker scroll-animate">
+        <h2 class="section-title">Contacts</h2>
+        <div class="contact-container">
+            <p>I am always open to discussing new collaborative opportunities, technological innovations, or simply enjoying a coffee chat about life.</p>
+            <div class="contact-links">
+                <a href="mailto:your-email@gmail.com" class="social-btn"><i class="fa-solid fa-envelope"></i> Email</a>
+                <a href="https://www.facebook.com/07.hunglam/" target="_blank" class="social-btn"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                <a href="https://www.instagram.com/your-instagram" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Hung Lam. Designed with elegance and purpose.</p>
+    </footer>
+
+    <script>
+        // 1. Hiệu ứng hiện dần khi cuộn trang
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.1 }); 
+
+        const hiddenElements = document.querySelectorAll('.scroll-animate');
+        hiddenElements.forEach((el) => observer.observe(el));
+
+        // 2. Hiệu ứng bong bóng trượt trên Navbar (Sliding Pill Effect)
+        const navLinks = document.querySelectorAll('.nav-links li');
+        const indicator = document.querySelector('.nav-indicator');
+        const navMenu = document.querySelector('.nav-links');
+
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', (e) => {
+                const rect = link.getBoundingClientRect();
+                const parentRect = navMenu.getBoundingClientRect();
+                
+                // Cập nhật vị trí và kích thước của bong bóng
+                indicator.style.width = `${rect.width}px`;
+                indicator.style.height = `${rect.height}px`;
+                indicator.style.left = `${rect.left - parentRect.left}px`;
+                indicator.style.top = `${rect.top - parentRect.top}px`;
+                indicator.style.opacity = '1';
+                indicator.style.transform = 'scale(1)';
+            });
+        });
+
+        // Ẩn bong bóng khi chuột rời khỏi toàn bộ khu vực menu
+        navMenu.addEventListener('mouseleave', () => {
+            indicator.style.opacity = '0';
+            indicator.style.transform = 'scale(0.8)';
+        });
+    </script>
+</body>
+</html>
