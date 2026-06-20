@@ -10,9 +10,8 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Nền đen sâu */
 body {
-    background-color: #030406; /* Đen pha chút sắc xanh navy cực tối */
+    background-color: #020305; /* Nền cực tối giúp kính mờ nổi bật */
     color: #a1a1aa;
     line-height: 1.7;
     font-weight: 300;
@@ -20,400 +19,274 @@ body {
     overflow-x: hidden;
 }
 
-/* --- IPHONE MINIMAL SHAPES (Cold & Tech Palette) --- */
+/* --- LỚP KÍNH CHUẨN APPLE LIQUID GLASS --- */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.03); /* Lớp nền trắng cực mỏng */
+    backdrop-filter: blur(24px) saturate(180%); /* Saturate đẩy màu nền phía sau lên */
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Viền sáng mô phỏng cạnh kính */
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3), /* Đổ bóng sâu */
+        inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Hắt sáng từ mép trên */
+}
+
+/* --- IPHONE MINIMAL SHAPES (Liquid Morphing) --- */
 .shape {
     position: fixed;
-    filter: blur(100px); 
+    filter: blur(120px); 
     z-index: -1;
-    opacity: 0.35; /* Giảm opacity một chút cho sang */
-    animation: floatShape 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.4; 
+    animation: liquidFloat 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .shape-1 {
-    width: 50vw;
-    height: 50vw;
-    background: #1e3a8a; /* Midnight Blue (Xanh biển sâu) */
-    top: -10%;
-    left: -10%;
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    width: 55vw; height: 55vw;
+    background: #1e3a8a;
+    top: -15%; left: -10%;
 }
 
 .shape-2 {
-    width: 60vw;
-    height: 60vw;
-    background: #0f766e; /* Deep Teal (Xanh ngọc lục bảo tối) */
-    bottom: -20%;
-    right: -10%;
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    width: 65vw; height: 65vw;
+    background: #0f766e;
+    bottom: -20%; right: -15%;
     animation-delay: -5s;
-    animation-duration: 25s;
 }
 
 .shape-3 {
-    width: 40vw;
-    height: 40vw;
-    background: #475569; /* Space Gray (Xám không gian) */
-    bottom: 20%;
-    left: 20%;
-    border-radius: 50% 50% 30% 70% / 50% 60% 30% 60%;
+    width: 45vw; height: 45vw;
+    background: #475569;
+    bottom: 25%; left: 15%;
     animation-delay: -10s;
-    animation-duration: 30s;
 }
 
-@keyframes floatShape {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    50% { transform: translate(5%, 3%) rotate(90deg) scale(1.1); }
-    100% { transform: translate(-3%, -5%) rotate(180deg) scale(0.9); }
+@keyframes liquidFloat {
+    0% { 
+        transform: translate(0, 0) scale(1);
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+    50% { 
+        transform: translate(8%, 5%) scale(1.1);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    100% { 
+        transform: translate(-5%, -8%) scale(0.9);
+        border-radius: 50% 50% 30% 70% / 50% 60% 30% 60%;
+    }
 }
 
-/* --- THANH ĐIỀU HƯỚNG (NAVBAR) VỚI SLIDING INDICATOR --- */
+/* --- THANH ĐIỀU HƯỚNG LIQUID GLASS --- */
 .navbar {
     position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(3, 4, 6, 0.4); 
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    top: 0; width: 100%;
+    background: rgba(2, 3, 5, 0.5); 
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 60px;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .nav-logo {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: 2px;
+    font-size: 1.4rem; font-weight: 600;
+    color: #ffffff; letter-spacing: 2px;
 }
 
 .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 10px;
-    position: relative; 
+    list-style: none; display: flex;
+    gap: 10px; position: relative; 
 }
 
 .nav-indicator {
     position: absolute;
-    background: rgba(255, 255, 255, 0.08); /* Bong bóng xám bạc */
+    background: rgba(255, 255, 255, 0.1); 
     border-radius: 50px;
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1); /* Gia tốc chất lỏng dính dính */
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.5);
     pointer-events: none; 
     z-index: 0;
 }
 
-.nav-links li {
-    position: relative;
-    z-index: 1; 
-}
+.nav-links li { position: relative; z-index: 1; }
 
 .nav-links a {
     display: inline-block;
-    color: #a1a1aa;
-    text-decoration: none;
-    font-weight: 400;
-    font-size: 0.95rem;
-    padding: 10px 24px;
-    transition: color 0.3s ease;
+    color: #a1a1aa; text-decoration: none;
+    font-weight: 400; font-size: 0.95rem;
+    padding: 10px 24px; transition: color 0.3s ease;
 }
 
-.nav-links li:hover a {
-    color: #ffffff;
-}
+.nav-links li:hover a { color: #ffffff; }
 
-/* --- HIỆU ỨNG CHUYỂN ĐỘNG (ANIMATIONS) HIỆN DẦN --- */
-.animate-slide-up {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: slideUpFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--delay);
-}
-
-@keyframes slideUpFade {
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.hidden-animate-fade {
-    animation: fadeIn 1.5s ease forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.scroll-animate {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 1s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scroll-animate.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* --- BỐ CỤC CHUNG CÁC SECTION --- */
-.section {
-    padding: 140px 10%;
-    position: relative;
-    z-index: 10; 
-}
-
-.section-title {
-    font-size: 2.5rem;
-    color: #ffffff;
-    margin-bottom: 50px;
-    text-align: center;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-.section-desc {
-    text-align: center;
-    color: #71717a;
-    margin-top: -30px;
-    margin-bottom: 60px;
-    font-size: 1.1rem;
-}
-
-.bg-darker {
-    background: linear-gradient(180deg, rgba(10,11,15,0) 0%, rgba(10,11,15,0.6) 50%, rgba(10,11,15,0) 100%);
-}
-
-/* Hero Section */
+/* --- HERO SECTION & LIQUID AVATAR --- */
 .hero {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-top: 60px;
+    min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    text-align: center; padding-top: 80px; padding-bottom: 40px;
+    position: relative; z-index: 10;
+}
+
+/* Khung Avatar */
+.hero-avatar {
+    width: 140px; height: 140px;
+    margin: 0 auto 30px;
     position: relative;
-    z-index: 10;
+    display: flex; justify-content: center; align-items: center;
+}
+
+/* Hình ảnh thật bên trong */
+.hero-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* Tròn xoe */
+    position: relative; z-index: 2;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Vòng chất lỏng quay quanh Avatar */
+.liquid-ring {
+    position: absolute;
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
+    background: linear-gradient(135deg, #38bdf8, #1e3a8a);
+    z-index: 1;
+    opacity: 0.8;
+    filter: blur(8px); /* Tạo vệt sáng mờ */
+    animation: spinLiquid 6s linear infinite;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+}
+
+@keyframes spinLiquid {
+    0% { transform: rotate(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    50% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    100% { transform: rotate(360deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
 }
 
 .greeting {
-    font-size: 0.85rem;
-    letter-spacing: 4px;
-    color: #38bdf8; /* Đổi sang màu Sky Blue sáng */
-    margin-bottom: 15px;
+    font-size: 0.85rem; letter-spacing: 4px;
+    color: #38bdf8; margin-bottom: 15px;
 }
 
 .hero h1 {
-    font-size: 4.5rem;
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 15px;
-    letter-spacing: -1px;
+    font-size: 4.5rem; font-weight: 600;
+    color: #ffffff; margin-bottom: 15px; letter-spacing: -1px;
 }
 
 .tagline {
-    font-size: 1.1rem;
-    color: #cbd5e1; /* Bạc sáng */
-    margin-bottom: 40px;
-    letter-spacing: 0.5px;
+    font-size: 1.1rem; color: #cbd5e1;
+    margin-bottom: 40px; letter-spacing: 0.5px;
 }
 
-/* Personal Info Card (Glassmorphism Effect) */
+/* Personal Info Card kết hợp Glass Panel */
 .personal-info-card {
-    background: rgba(20, 21, 26, 0.4);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 30px;
-    max-width: 550px;
-    margin: 0 auto 40px;
-    text-align: left;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 30px; max-width: 550px;
+    margin: 0 auto 40px; text-align: left;
 }
 
-.personal-info-card ul {
-    list-style: none;
-}
+.personal-info-card ul { list-style: none; }
+.personal-info-card li { margin-bottom: 15px; font-size: 0.95rem; color: #d4d4d8; }
+.personal-info-card li strong { color: #ffffff; font-weight: 500; }
+.personal-info-card i { color: #38bdf8; margin-right: 12px; width: 20px; }
 
-.personal-info-card li {
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-    color: #d4d4d8;
-}
-
-.personal-info-card li strong {
-    color: #ffffff;
-    font-weight: 500;
-}
-
-.personal-info-card i {
-    color: #38bdf8; /* Icon đổi sang màu Sky Blue */
-    margin-right: 12px;
-    width: 20px;
-}
-
-/* Buttons */
+/* Nút bấm nổi bật (Pill Button) */
 .btn-primary {
-    display: inline-block;
-    padding: 14px 32px;
-    background: #ffffff;
-    color: #030406;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 50px;
+    display: inline-block; padding: 14px 32px;
+    background: rgba(255,255,255,0.9); color: #000000;
+    text-decoration: none; font-weight: 500; border-radius: 50px;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .btn-primary:hover {
-    background: #e4e4e7;
-    transform: scale(1.03);
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
+    background: #ffffff; transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
 }
 
-/* Timeline */
+/* --- TIMELINE (Dây chuyền lịch sử) --- */
 .timeline {
-    max-width: 800px;
-    margin: 0 auto;
-    border-left: 2px solid rgba(56, 189, 248, 0.2); /* Sợi dây liên kết Sky Blue */
+    max-width: 800px; margin: 0 auto;
+    border-left: 2px solid rgba(56, 189, 248, 0.15);
     padding-left: 40px;
 }
 
-.timeline-item {
-    margin-bottom: 50px;
-    position: relative;
-    transition: transform 0.3s ease;
-}
-
-.timeline-item:hover {
-    transform: translateX(5px);
-}
+.timeline-item { margin-bottom: 50px; position: relative; transition: transform 0.3s ease; }
+.timeline-item:hover { transform: translateX(5px); }
 
 .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -45px;
-    top: 5px;
-    width: 10px;
-    height: 10px;
-    background: #38bdf8; /* Dấu chấm phát sáng Sky Blue */
-    border-radius: 50%;
+    content: ''; position: absolute;
+    left: -45px; top: 5px; width: 10px; height: 10px;
+    background: #38bdf8; border-radius: 50%;
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
 }
 
-.timeline-item h3 {
-    color: #ffffff;
-    font-size: 1.3rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
+.timeline-item h3 { color: #ffffff; font-size: 1.3rem; font-weight: 500; margin-bottom: 8px; }
+.timeline-item .date { display: block; color: #38bdf8; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
 
-.timeline-item .date {
-    display: block;
-    color: #38bdf8;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-}
-
-/* Thành Tựu (Cùng 1 hàng) */
+/* --- THÀNH TỰU (Kính mờ) --- */
 .achievements-grid {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: nowrap; 
-    max-width: 1000px;
-    margin: 0 auto;
+    display: flex; justify-content: center; gap: 30px;
+    flex-wrap: nowrap; max-width: 1000px; margin: 0 auto;
 }
 
 .achievement-card {
-    flex: 1;
-    min-width: 250px;
-    height: 340px;
-    background: rgba(20, 21, 26, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 30px;
+    flex: 1; min-width: 250px; height: 340px;
+    border-radius: 24px; /* Bo góc tròn hơn đúng hệ Apple */
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 30px;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .achievement-card:hover {
     transform: translateY(-15px);
-    border-color: rgba(56, 189, 248, 0.4); /* Đổi màu viền khi hover sang Sky Blue */
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-    background: rgba(30, 32, 40, 0.6);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.ach-icon {
-    font-size: 2.5rem;
-    color: #ffffff;
-    margin-bottom: 25px;
-    opacity: 0.8;
-}
+.ach-icon { font-size: 2.5rem; color: #ffffff; margin-bottom: 25px; opacity: 0.8; }
+.achievement-card h3 { color: #ffffff; font-size: 1.4rem; font-weight: 600; margin-bottom: 10px; }
+.achievement-card p { color: #a1a1aa; font-size: 0.9rem; }
 
-.achievement-card h3 {
-    color: #ffffff;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.achievement-card p {
-    color: #a1a1aa;
-    font-size: 0.9rem;
-}
-
-/* Liên hệ */
-.contact-container {
-    text-align: center;
-    max-width: 650px;
-    margin: 0 auto;
-}
-
-.contact-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 40px;
-}
+/* --- LIÊN HỆ & CÁC NÚT MẠNG XÃ HỘI --- */
+.contact-container { text-align: center; max-width: 650px; margin: 0 auto; }
+.contact-links { display: flex; justify-content: center; gap: 20px; margin-top: 40px; }
 
 .social-btn {
-    padding: 14px 28px;
-    background: rgba(255,255,255,0.03);
-    color: #ffffff;
-    border: 1px solid rgba(255,255,255,0.1);
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 400;
+    padding: 14px 28px; color: #ffffff;
+    text-decoration: none; border-radius: 50px; font-weight: 400;
+    display: flex; align-items: center; gap: 10px;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .social-btn:hover {
-    background: #ffffff;
-    color: #030406;
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
 }
 
-/* Footer */
-footer {
-    text-align: center;
-    padding: 40px;
-    background: transparent;
-    color: #52525b;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 10;
+/* --- ANIMATIONS CHUNG & BỐ CỤC SECTION --- */
+.animate-slide-up {
+    opacity: 0; transform: translateY(30px);
+    animation: slideUpFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--delay);
 }
+
+@keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+
+.hidden-animate-fade { animation: fadeIn 1.5s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.scroll-animate {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 1s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-animate.show { opacity: 1; transform: translateY(0); }
+
+.section { padding: 140px 10%; position: relative; z-index: 10; }
+.section-title { font-size: 2.5rem; color: #ffffff; margin-bottom: 50px; text-align: center; font-weight: 500; letter-spacing: 1px; }
+.section-desc { text-align: center; color: #71717a; margin-top: -30px; margin-bottom: 60px; font-size: 1.1rem; }
+.bg-darker { background: linear-gradient(180deg, rgba(10,11,15,0) 0%, rgba(10,11,15,0.4) 50%, rgba(10,11,15,0) 100%); }
+
+footer { text-align: center; padding: 40px; color: #52525b; font-size: 0.85rem; letter-spacing: 0.5px; position: relative; z-index: 10; }

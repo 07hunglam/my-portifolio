@@ -28,11 +28,16 @@
 
     <header class="hero" id="about">
         <div class="hero-content">
-            <p class="greeting animate-slide-up" style="--delay: 0.1s">INTRODUCTION</p>
-            <h1 class="animate-slide-up" style="--delay: 0.3s">Hello, I'm Hung Lam</h1>
-            <p class="tagline animate-slide-up" style="--delay: 0.5s">IT Student • Software Developer • Stoic Explorer</p>
+            <div class="hero-avatar animate-slide-up" style="--delay: 0.1s">
+                <div class="liquid-ring"></div>
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Hung Lam Avatar">
+            </div>
+
+            <p class="greeting animate-slide-up" style="--delay: 0.2s">INTRODUCTION</p>
+            <h1 class="animate-slide-up" style="--delay: 0.4s">Hello, I'm Hung Lam</h1>
+            <p class="tagline animate-slide-up" style="--delay: 0.6s">IT Student • Software Developer • Stoic Explorer</p>
             
-            <div class="personal-info-card animate-slide-up" style="--delay: 0.7s">
+            <div class="personal-info-card glass-panel animate-slide-up" style="--delay: 0.8s">
                 <ul>
                     <li><i class="fa-solid fa-user"></i> <strong>Gender:</strong> Male</li>
                     <li><i class="fa-solid fa-calendar"></i> <strong>Date of Birth:</strong> September 22, 2007</li>
@@ -41,7 +46,7 @@
                 </ul>
             </div>
             
-            <a href="#experience" class="btn-primary animate-slide-up" style="--delay: 0.9s">Explore My Journey</a>
+            <a href="#experience" class="btn-primary animate-slide-up" style="--delay: 1.0s">Explore My Journey</a>
         </div>
     </header>
 
@@ -92,17 +97,17 @@
         <p class="section-desc">Milestones in my academic and personal development journey.</p>
         
         <div class="achievements-grid">
-            <div class="achievement-card">
+            <div class="achievement-card glass-panel">
                 <div class="ach-icon"><i class="fa-solid fa-language"></i></div>
                 <h3>IELTS 7.5</h3>
                 <p>Advanced English Proficiency</p>
             </div>
-            <div class="achievement-card">
+            <div class="achievement-card glass-panel">
                 <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
                 <h3>ICPC National</h3>
                 <p>Vietnam National Contest Participant</p>
             </div>
-            <div class="achievement-card">
+            <div class="achievement-card glass-panel">
                 <div class="ach-icon"><i class="fa-solid fa-yin-yang"></i></div>
                 <h3>HSK 3</h3>
                 <p>Mandarin Chinese Certification</p>
@@ -115,9 +120,9 @@
         <div class="contact-container">
             <p>I am always open to discussing new collaborative opportunities, technological innovations, or simply enjoying a coffee chat about life.</p>
             <div class="contact-links">
-                <a href="mailto:your-email@gmail.com" class="social-btn"><i class="fa-solid fa-envelope"></i> Email</a>
-                <a href="https://www.facebook.com/07.hunglam/" target="_blank" class="social-btn"><i class="fa-brands fa-facebook"></i> Facebook</a>
-                <a href="https://www.instagram.com/your-instagram" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                <a href="mailto:your-email@gmail.com" class="social-btn glass-panel"><i class="fa-solid fa-envelope"></i> Email</a>
+                <a href="https://www.facebook.com/07.hunglam/" target="_blank" class="social-btn glass-panel"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                <a href="https://www.instagram.com/your-instagram" target="_blank" class="social-btn glass-panel"><i class="fa-brands fa-instagram"></i> Instagram</a>
             </div>
         </div>
     </section>
@@ -127,7 +132,6 @@
     </footer>
 
     <script>
-        // 1. Hiệu ứng hiện dần khi cuộn trang
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -139,7 +143,7 @@
         const hiddenElements = document.querySelectorAll('.scroll-animate');
         hiddenElements.forEach((el) => observer.observe(el));
 
-        // 2. Hiệu ứng bong bóng trượt trên Navbar (Sliding Pill Effect)
+        // Liquid Indicator cho Navbar
         const navLinks = document.querySelectorAll('.nav-links li');
         const indicator = document.querySelector('.nav-indicator');
         const navMenu = document.querySelector('.nav-links');
@@ -149,7 +153,6 @@
                 const rect = link.getBoundingClientRect();
                 const parentRect = navMenu.getBoundingClientRect();
                 
-                // Cập nhật vị trí và kích thước của bong bóng
                 indicator.style.width = `${rect.width}px`;
                 indicator.style.height = `${rect.height}px`;
                 indicator.style.left = `${rect.left - parentRect.left}px`;
@@ -159,10 +162,9 @@
             });
         });
 
-        // Ẩn bong bóng khi chuột rời khỏi toàn bộ khu vực menu
         navMenu.addEventListener('mouseleave', () => {
             indicator.style.opacity = '0';
-            indicator.style.transform = 'scale(0.8)';
+            indicator.style.transform = 'scale(0.5)';
         });
     </script>
 </body>
