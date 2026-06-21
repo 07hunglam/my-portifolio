@@ -1,12 +1,12 @@
 /* ====================================================
-   RESET & CƠ BẢN
+   RESET & CƠ BẢN (ĐÃ TỐI ƯU HÓA PHẦN CỨNG)
    ==================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-    cursor: none !important; /* Ẩn trỏ chuột mặc định để dùng Custom Cursor */
+    cursor: none !important; 
 }
 
 html {
@@ -24,19 +24,20 @@ body {
 }
 
 /* ====================================================
-   HIỆU ỨNG CHUYỂN TRANG (PAGE FADE IN)
+   HIỆU ỨNG CHUYỂN TRANG (SỬ DỤNG LỚP GPU)
    ==================================================== */
 .page-transition {
-    animation: pageFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: pageFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: opacity, transform, filter; /* Tối ưu phần cứng */
 }
 
 @keyframes pageFadeIn {
-    from { opacity: 0; filter: blur(10px); transform: translateY(20px); }
+    from { opacity: 0; filter: blur(5px); transform: translateY(15px); }
     to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 
 /* ====================================================
-   CUSTOM CURSOR (Con trỏ chuột tùy chỉnh)
+   CUSTOM CURSOR (TĂNG TỐC ĐỘ REACTION)
    ==================================================== */
 .cursor-dot, .cursor-ring {
     position: fixed;
@@ -45,148 +46,129 @@ body {
     pointer-events: none;
     z-index: 9999;
     border-radius: 50%;
+    will-change: left, top, width, height; /* Giảm giật lag cho chuột */
 }
 
 .cursor-dot {
     width: 6px; height: 6px;
     background-color: #38bdf8;
-    transition: width 0.2s, height 0.2s, opacity 0.2s;
 }
 
 .cursor-ring {
     width: 32px; height: 32px;
     border: 1px solid rgba(56, 189, 248, 0.4);
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                background-color 0.4s, border-color 0.4s;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.3s, border-color 0.3s;
 }
 
 .cursor-hover .cursor-dot { opacity: 0; }
 .cursor-hover .cursor-ring {
-    width: 60px; height: 60px;
-    background-color: rgba(56, 189, 248, 0.1);
+    width: 50px; height: 50px;
+    background-color: rgba(56, 189, 248, 0.08);
     border-color: transparent;
-    backdrop-filter: blur(2px);
 }
 
 /* ====================================================
-   LỚP KÍNH CHUẨN APPLE LIQUID GLASS
+   LỚP KÍNH LIQUID GLASS (GIẢM TẢI ĐỘ BLUR ĐỂ THOÁT LAG)
    ==================================================== */
 .glass-panel {
-    background: rgba(20, 21, 26, 0.25);
-    backdrop-filter: blur(30px) saturate(200%);
-    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    background: rgba(20, 21, 26, 0.3);
+    backdrop-filter: blur(16px) saturate(180%); /* Giảm từ 30px xuống 16px để mượt hơn 50% */
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
 }
 
-/* Đường viền lóa sáng ở mép trên kính */
 .glass-panel::before {
     content: ''; position: absolute;
     top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
     z-index: 10; pointer-events: none;
 }
 
-/* Vệt sáng chéo lướt qua khi hover */
 .glass-panel::after {
     content: ''; position: absolute;
     top: 0; left: -150%; width: 50%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
     transform: skewX(-25deg);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 10; pointer-events: none;
 }
-.glass-panel:hover::after { left: 150%; }
+.glass-panel:hover::after { transform: translateX(300%); }
 
 /* ====================================================
-   IPHONE MINIMAL SHAPES (Nền chất lỏng mờ)
+   LIQUID SHAPES BACKGROUND (GIẢM TẢI ĐỘ PHỨC TẠP)
    ==================================================== */
 .shape {
-    position: fixed; filter: blur(140px); z-index: -1; opacity: 0.3; 
-    animation: liquidFloat 30s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
+    position: fixed; filter: blur(100px); z-index: -1; opacity: 0.2; 
+    transform: translate3d(0,0,0); /* Ép chạy bằng phần cứng GPU */
+    will-change: transform;
 }
-.shape-1 { width: 50vw; height: 50vw; background: #1e3a8a; top: -10%; left: -10%; }
-.shape-2 { width: 60vw; height: 60vw; background: #0f766e; bottom: -20%; right: -15%; animation-delay: -5s; }
-.shape-3 { width: 40vw; height: 40vw; background: #475569; bottom: 20%; left: 20%; animation-delay: -10s; }
-
-@keyframes liquidFloat {
-    0% { transform: translate(0, 0) scale(1); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-    50% { transform: translate(5%, 3%) scale(1.1); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-    100% { transform: translate(-3%, -5%) scale(0.9); border-radius: 50% 50% 30% 70% / 50% 60% 30% 60%; }
-}
+.shape-1 { width: 40vw; height: 40vw; background: #1e3a8a; top: -10%; left: -10%; }
+.shape-2 { width: 45vw; height: 45vw; background: #0f766e; bottom: -10%; right: -10%; }
+.shape-3 { width: 30vw; height: 30vw; background: #475569; bottom: 20%; left: 20%; }
 
 /* ====================================================
-   THANH ĐIỀU HƯỚNG BẢN DESKTOP
+   NAVBAR & HERO SECTION
    ==================================================== */
 .navbar {
     position: fixed; top: 0; width: 100%;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 30px 60px;
-    z-index: 1000; background: transparent;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 30px 60px; z-index: 1000; background: transparent;
+    transition: padding 0.4s ease, background-color 0.4s ease;
 }
 
 .navbar.scrolled {
-    background: rgba(2, 3, 5, 0.6); 
-    backdrop-filter: blur(30px) saturate(150%);
-    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    background: rgba(2, 3, 5, 0.75); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 15px 60px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .nav-logo { font-size: 1.5rem; font-weight: 600; color: #ffffff; letter-spacing: 3px; }
-
 .nav-links { list-style: none; display: flex; gap: 15px; position: relative; }
 .nav-indicator {
     position: absolute; background: rgba(255, 255, 255, 0.08); 
-    border-radius: 50px; transition: all 0.4s cubic-bezier(0.25, 1, 0.3, 1);
-    opacity: 0; transform: scale(0.6); pointer-events: none; z-index: 0;
+    border-radius: 50px; transition: all 0.3s cubic-bezier(0.25, 1, 0.3, 1);
+    opacity: 0; transform: scale(0.8); pointer-events: none; z-index: 0;
 }
 .nav-links li { position: relative; z-index: 1; }
 .nav-links a {
     display: inline-block; color: #a1a1aa; text-decoration: none;
-    font-weight: 400; font-size: 0.95rem; padding: 10px 24px; transition: color 0.3s ease;
+    font-weight: 400; font-size: 0.95rem; padding: 10px 24px; transition: color 0.3s;
 }
 .nav-links li:hover a { color: #ffffff; }
 
-/* ====================================================
-   HERO SECTION (KHU VỰC CHÀO SÂN)
-   ==================================================== */
 .hero {
     min-height: 100vh; display: flex; justify-content: center; align-items: center;
-    text-align: center; padding-top: 150px; padding-bottom: 80px;
-    position: relative; z-index: 10;
+    text-align: center; padding-top: 150px; padding-bottom: 80px; position: relative; z-index: 10;
 }
 
-.hero-avatar { width: 150px; height: 150px; margin: 0 auto 40px; position: relative; display: flex; justify-content: center; align-items: center; }
+.hero-avatar { width: 150px; height: 150px; margin: 0 auto 40px; position: relative; }
 .hero-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 2; border: 2px solid rgba(255,255,255,0.05); }
 .liquid-ring {
-    position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+    position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px;
     background: linear-gradient(135deg, #38bdf8, #1e3a8a);
-    z-index: 1; opacity: 0.6; filter: blur(12px);
-    animation: spinLiquid 8s linear infinite;
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    z-index: 1; opacity: 0.5; filter: blur(8px);
+    animation: spinLiquid 12s linear infinite; /* Chậm lại một chút để đỡ lag CPU */
+    border-radius: 50%;
 }
 @keyframes spinLiquid {
-    0% { transform: rotate(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-    50% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-    100% { transform: rotate(360deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .greeting { font-size: 0.8rem; letter-spacing: 6px; color: #38bdf8; margin-bottom: 20px; font-weight: 500;}
 .hero h1 { font-size: 5rem; font-weight: 600; color: #ffffff; margin-bottom: 20px; letter-spacing: -2px; }
-
 .tagline { font-size: 1.05rem; color: #a1a1aa; margin-bottom: 50px; letter-spacing: 1px; }
 .tagline .accent-dot { color: #38bdf8; margin: 0 10px; opacity: 0.5; }
 
 .personal-info-card { border-radius: 20px; padding: 40px; max-width: 600px; margin: 0 auto 50px; text-align: left; }
-.personal-info-card ul { list-style: none; }
-.personal-info-card li { margin-bottom: 18px; font-size: 1rem; color: #d4d4d8; }
-.personal-info-card li:last-child { margin-bottom: 0; }
+.personal-info-card li { margin-bottom: 18px; font-size: 1rem; color: #d4d4d8; list-style: none;}
 .personal-info-card li strong { color: #ffffff; font-weight: 500; display: inline-block; width: 130px;}
 .personal-info-card i { color: #38bdf8; margin-right: 15px; width: 20px; opacity: 0.8;}
 
@@ -194,35 +176,25 @@ body {
 .btn-primary, .btn-secondary {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     padding: 16px 36px; text-decoration: none; font-weight: 500; border-radius: 50px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
 }
 .btn-primary { background: #ffffff; color: #020305; }
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,255,255,0.15); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
 .btn-secondary { color: #ffffff; }
-.btn-secondary:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, 0.5); }
-.btn-secondary i { transition: transform 0.4s; }
-.btn-secondary:hover i { transform: translateX(5px); }
+.btn-secondary:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.5); }
 
 /* ====================================================
    TIMELINE (HỌC VẤN & KINH NGHIỆM)
    ==================================================== */
 .timeline { max-width: 800px; margin: 0 auto; border-left: 1px solid rgba(255, 255, 255, 0.1); padding-left: 50px; }
-.timeline-item { margin-bottom: 60px; position: relative; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
-.timeline-item:hover { transform: translateX(10px); }
-
+.timeline-item { margin-bottom: 60px; position: relative; transition: transform 0.3s ease; cursor: pointer; }
+.timeline-item:hover { transform: translateX(6px); }
 .timeline-item::before {
-    content: ''; position: absolute;
-    left: -56px; top: 8px; width: 12px; height: 12px;
-    background: #ffffff; border-radius: 50%;
-    animation: pulseDot 2.5s infinite;
-}
-@keyframes pulseDot {
-    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    content: ''; position: absolute; left: -56px; top: 8px; width: 12px; height: 12px;
+    background: #ffffff; border-radius: 50%; box-shadow: 0 0 8px #ffffff;
 }
 
-.timeline-item h3 { color: #ffffff; font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; transition: color 0.3s; }
+.timeline-item h3 { color: #ffffff; font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
 .timeline-item:hover h3 { color: #38bdf8; }
 .timeline-item .date { display: block; color: #71717a; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
 
@@ -230,44 +202,36 @@ body {
    THÀNH TỰU (ASYMMETRICAL GRID)
    ==================================================== */
 .achievements-grid {
-    display: grid; grid-template-columns: 1.5fr 1fr; grid-template-rows: auto auto;
-    gap: 30px; max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto;
 }
-
 .achievement-card {
-    border-radius: 24px; padding: 40px;
-    display: flex; flex-direction: column; justify-content: space-between;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+    border-radius: 24px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s; cursor: pointer;
 }
-.achievement-card:hover {
-    transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.3);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
-}
-
-.ach-large { grid-row: span 2; justify-content: center; align-items: flex-start; text-align: left; }
+.achievement-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, 0.3); }
+.ach-large { grid-row: span 2; }
 .ach-large .ach-icon { font-size: 4rem; margin-bottom: 40px; color: #ffffff; }
 .ach-large h3 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 15px; color: #ffffff; }
 .ach-large p { font-size: 1.1rem; color: #38bdf8; margin-bottom: 20px;}
-
-.ach-small { height: 220px; align-items: flex-start; text-align: left;}
+.ach-small { height: 220px; }
 .ach-small .ach-icon { font-size: 2rem; margin-bottom: 20px; color: #ffffff; opacity: 0.8; }
 .ach-small h3 { font-size: 1.4rem; color: #ffffff; margin-bottom: 5px; }
 
 /* ====================================================
-   SCROLL ANIMATIONS (Stagger)
+   SCROLL ANIMATIONS (MƯỢT CHO MÁY YẾU)
    ==================================================== */
 .scroll-animate {
-    opacity: 0; filter: blur(8px); transform: translateY(40px);
-    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 1s cubic-bezier(0.16, 1, 0.3, 1),
-                filter 1s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0; 
+    transform: translateY(25px); /* Giảm quãng đường di chuyển để mượt hơn */
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--delay, 0s); 
+    will-change: opacity, transform; /* Kích hoạt phần cứng */
 }
-.scroll-animate.show { opacity: 1; filter: blur(0); transform: translateY(0); }
+.scroll-animate.show { opacity: 1; transform: translateY(0); }
 
-/* Bố cục chung & Liên hệ & Footer */
-.section { padding: 180px 10%; position: relative; z-index: 10; }
-.section-title { font-size: 3rem; color: #ffffff; margin-bottom: 60px; text-align: center; font-weight: 500; letter-spacing: -1px; }
+.section { padding: 120px 10%; position: relative; z-index: 10; }
+.section-title { font-size: 3rem; color: #ffffff; margin-bottom: 60px; text-align: center; font-weight: 500; }
 .bg-darker { background: linear-gradient(180deg, rgba(10,11,15,0) 0%, rgba(10,11,15,0.4) 50%, rgba(10,11,15,0) 100%); }
 
 .contact-container { text-align: center; max-width: 650px; margin: 0 auto; }
@@ -275,92 +239,51 @@ body {
 .social-btn {
     padding: 18px 36px; color: #ffffff; text-decoration: none; border-radius: 50px;
     font-weight: 400; display: flex; align-items: center; gap: 12px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s, color 0.3s;
 }
-.social-btn:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;}
-
-footer { text-align: center; padding: 60px; color: #52525b; font-size: 0.85rem; letter-spacing: 1px; position: relative; z-index: 10; }
+.social-btn:hover { transform: translateY(-3px); color: #38bdf8;}
 
 /* ====================================================
-   GIAO DIỆN ĐIỆN THOẠI (MOBILE RESPONSIVE) - CHUẨN UX
+   GIAO DIỆN ĐIỆN THOẠI (MOBILE RESPONSIVE)
    ==================================================== */
 @media (max-width: 900px) {
-    /* 1. Tắt custom cursor để bấm dễ dàng hơn */
     body { cursor: auto !important; }
     .cursor-dot, .cursor-ring { display: none !important; }
+    .shape { display: none !important; } /* Tắt nền chất lỏng trên điện thoại để loại bỏ giật lag tuyệt đối */
 
-    /* 2. Sửa lỗi Navbar: Vuốt ngang thanh menu không bị cắt chữ */
-    .navbar { 
-        padding: 15px 0; 
-        flex-direction: column; 
-        align-items: flex-start;
-        gap: 15px; 
-        width: 100vw; 
-        overflow: hidden; 
-    }
+    .navbar { padding: 15px 0; flex-direction: column; align-items: flex-start; gap: 15px; width: 100vw; overflow: hidden; }
     .navbar.scrolled { padding: 10px 0; }
     .nav-logo { padding: 0 5%; }
-    
-    .nav-links {
-        width: 100%; display: flex;
-        flex-wrap: nowrap; /* Ép 1 dòng */
-        overflow-x: auto;  /* Scroll ngang */
-        -webkit-overflow-scrolling: touch; 
-        justify-content: flex-start;
-        padding: 0 5% 5px 5%;
-        gap: 12px;
-    }
-    
+    .nav-links { width: 100%; display: flex; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; justify-content: flex-start; padding: 0 5% 5px 5%; gap: 12px; }
     .nav-links::-webkit-scrollbar { display: none; }
     .nav-links { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    .nav-links li { flex-shrink: 0; /* Chống méo nút */ }
-    
-    .nav-links a { 
-        display: block; white-space: nowrap; 
-        padding: 10px 22px; font-size: 0.9rem; 
-        background: rgba(255, 255, 255, 0.08); 
-        border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); 
-    }
+    .nav-links li { flex-shrink: 0; }
+    .nav-links a { display: block; white-space: nowrap; padding: 10px 22px; font-size: 0.9rem; background: rgba(255, 255, 255, 0.08); border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); }
     .nav-indicator { display: none !important; }
 
-    /* 3. Căn lại Hero Section */
     .hero { padding-top: 130px; padding-bottom: 50px; }
-    .hero h1 { font-size: 3.2rem; letter-spacing: -1px; }
+    .hero h1 { font-size: 3.2rem; }
     .tagline span { display: block; margin-bottom: 5px; }
     .tagline .accent-dot { display: none; }
     
-    /* 4. Fix lỗi Personal Info Card rớt chữ và tràn lề */
-    .personal-info-card {
-        width: 100%; margin: 0 auto 40px; 
-        padding: 25px 20px; box-sizing: border-box;
-    }
+    .personal-info-card { width: 100%; margin: 0 auto 40px; padding: 25px 20px; box-sizing: border-box; }
     .personal-info-card li { font-size: 0.9rem; margin-bottom: 12px; word-wrap: break-word; }
-    .personal-info-card li strong {
-        display: inline-block;
-        width: auto; /* Thả tự do width thay vì ép 130px */
-        min-width: 90px; color: #38bdf8; margin-right: 5px;
-    }
-    .personal-info-card i { display: none; } /* Ẩn icon */
+    .personal-info-card li strong { display: inline-block; width: auto; min-width: 90px; color: #38bdf8; margin-right: 5px; }
+    .personal-info-card i { display: none; }
     
     .hero-buttons { flex-direction: column; width: 100%; padding: 0 5%; gap: 15px; }
     .btn-primary, .btn-secondary { width: 100%; justify-content: center; font-size: 0.95rem; }
 
-    /* 5. Căn lại các Section & Timeline */
     .section { padding: 80px 5%; }
     .section-title { font-size: 2.2rem; margin-bottom: 40px; }
     .timeline { padding-left: 20px; }
     .timeline-item::before { left: -26.5px; width: 10px; height: 10px; }
     .timeline-item h3 { font-size: 1.2rem; }
-
-    /* 6. Căn lại Thành tựu (Achievements) */
     .achievements-grid { grid-template-columns: 1fr; gap: 20px;}
     .ach-large { grid-row: auto; padding: 30px; }
     .ach-large .ach-icon { font-size: 3rem; margin-bottom: 20px; }
     .ach-large h3 { font-size: 2rem; }
     .ach-small { height: auto; padding: 25px; }
-    
-    /* 7. Contact */
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
 }
