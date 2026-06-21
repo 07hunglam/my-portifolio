@@ -144,9 +144,23 @@
 
     <script>
         // Hàm xử lý gọi API cập nhật bộ đếm lượt xem không đồng bộ
+        // Hàm xử lý gọi API cập nhật bộ đếm lượt xem (Có chống spam F5)
         async function updateVisitorCounter() {
             try {
-                const response = await fetch('/api/counter', { method: 'POST' });
+                // Kiểm tra xem trình duyệt đã có cờ "đã ghé thăm" trong phiên này chưa
+                const hasVisited = sessionStorage.getItem('has_visited_hunglam_site');
+                
+                let response;
+                if (hasVisited) {
+                    // NẾU ĐÃ GHÉ THĂM: Gọi API bằng GET để chỉ lấy số tổng, không cộng dồn nữa
+                    response = await fetch('/api/counter', { method: 'GET' });
+                } else {
+                    // NẾU CHƯA GHÉ THĂM: Gọi API bằng POST để hệ thống tăng số lượt xem lên
+                    response = await fetch('/api/counter', { method: 'POST' });
+                    // Đánh dấu cờ đã ghé thăm vào trình duyệt để lần F5 sau không bị tăng số
+                    sessionStorage.setItem('has_visited_hunglam_site', 'true');
+                }
+
                 const data = await response.json();
                 if (data.success) {
                     document.getElementById('view-counter').textContent = Number(data.visitor_count).toLocaleString();
@@ -158,6 +172,8 @@
                 document.getElementById('view-counter').textContent = 'Offline';
             }
         }
+        // Gọi hàm thực thi ngay khi cấu trúc tài liệu sẵn sàng
+        document.addEventListener('DOMContentLoaded', updateVisitorCounter);
         // Gọi hàm thực thi ngay khi cấu trúc tài liệu sẵn sàng
         document.addEventListener('DOMContentLoaded', updateVisitorCounter);
 
