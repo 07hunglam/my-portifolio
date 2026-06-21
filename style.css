@@ -287,3 +287,24 @@ body {
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
 }
+/* --- ĐỒNG BỘ BO GÓC CAO CẤP CHUẨN APPLE --- */
+
+/* Tất cả các khối kính mờ (Personal Info Card, Achievement Cards, và thẻ text bên About) */
+.glass-panel, .personal-info-card, .achievement-card, .ed-text {
+    border-radius: 20px !important; /* Bo tròn mượt mà thay vì góc vuông */
+}
+
+/* Các khung ảnh lớn nhỏ trên trang Mood Board tạp chí */
+.ed-img, .ed-img img {
+    border-radius: 20px !important; /* Bo góc hệ thống ảnh đồng bộ với khối chữ */
+}
+
+/* Các ô màu trong bảng Palette */
+.swatch {
+    border-radius: 10px !important; /* Ô màu bo góc nhỏ hơn một chút để cân đối */
+}
+
+/* Cập nhật trạng thái lướt qua (Hover) của ảnh để không bị lỗi tràn góc */
+.ed-img {
+    mask-image: -webkit-radial-gradient(white, black); /* Sửa lỗi tràn góc khi zoom trên Safari/Chrome */
+}
