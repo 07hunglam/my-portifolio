@@ -8,6 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- ĐỊNH NGHĨA BIẾN MÀU CHỦ ĐỀ (DYNAMIC THEME) --- */
+        :root {
+            --accent-color: #38bdf8;
+            --accent-rgb: 56, 189, 248;
+            --glass-bg: rgba(20, 21, 26, 0.25);
+            --body-bg: #020305;
+        }
+
+        /* Thêm hiệu ứng mượt mà khi đổi màu chủ đề */
+        body, .ed-text, .back-nav a, h2, p, span {
+            transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        color 0.5s ease, 
+                        border-color 0.5s ease;
+        }
+
         /* Editorial Spread Layout */
         .editorial-board {
             position: relative;
@@ -19,15 +34,17 @@
 
         .ed-header { margin-bottom: 15vh; }
         .ed-header h1 { font-size: 5rem; font-weight: 300; letter-spacing: -2px; color: #fff; line-height: 1.1; }
-        .ed-header h1 span { font-style: italic; color: #38bdf8; font-weight: 400; }
+        .ed-header h1 span { font-style: italic; color: var(--accent-color); font-weight: 400; }
         .ed-header p { font-size: 1.1rem; letter-spacing: 2px; color: #71717a; text-transform: uppercase; margin-top: 20px;}
 
         /* Từng mảnh ghép (Fragment) của Layout Bất Đối Xứng */
         .fragment {
             display: flex;
             align-items: center;
-            margin-bottom: 20vh;
+            margin-bottom: 25vh;
             position: relative;
+            /* Phục vụ tính năng 3D Tilt */
+            perspective: 1000px; 
         }
 
         .frag-left { justify-content: flex-start; }
@@ -38,8 +55,10 @@
             position: relative;
             z-index: 1;
             overflow: hidden;
-            border-radius: 12px; /* Góc sắc hơn một chút theo tạp chí */
+            border-radius: 12px;
             box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out; /* Phải để ease-out ngắn để chạy Tilt mượt */
         }
         .ed-img img {
             width: 100%; height: 100%; object-fit: cover;
@@ -48,70 +67,75 @@
         }
         .fragment:hover .ed-img img { transform: scale(1.05); }
 
-        /* Floating Text Box (Overlapping) */
+        /* Floating Text Box (Premium Glass) */
         .ed-text {
             position: absolute;
             z-index: 5;
             width: 45%;
             padding: 50px;
             text-align: left;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out, background-color 0.5s, border-color 0.5s;
+            /* Đồng bộ màu nhấn */
+            border: 1px solid rgba(var(--accent-rgb), 0.1); 
         }
         .frag-left .ed-text { right: 5%; top: 30%; }
         .frag-right .ed-text { left: 5%; bottom: -15%; }
 
         .ed-text h2 { font-size: 2.5rem; color: #fff; margin-bottom: 15px; letter-spacing: -1px; }
-        .ed-text h2 .dot { color: #38bdf8; }
+        .ed-text h2 .dot { color: var(--accent-color); }
         .ed-text p { font-size: 1.05rem; color: #a1a1aa; line-height: 1.8; }
 
-        /* Kích thước cụ thể cho từng ảnh */
+        /* Nâng cấp Premium Glass động */
+        .premium-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* TƯƠNG TÁC BẢNG MÀU */
+        .mb-palette {
+            display: flex;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: 0 0 15vh 0;
+        }
+        .swatch-container { text-align: center; cursor: pointer; transition: transform 0.3s ease; }
+        .swatch-container:hover { transform: translateY(-8px); }
+        .swatch { 
+            width: 85px; height: 110px; margin-bottom: 12px; border-radius: 8px; 
+            box-shadow: 2px 10px 20px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); 
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .swatch-container.active .swatch {
+            border-color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
+        }
+        .swatch-container span { font-size: 0.75rem; color: #a1a1aa; letter-spacing: 1.5px; font-weight: 500; transition: color 0.3s;}
+        .swatch-container.active span { color: #ffffff; }
+
+        /* Kích thước ảnh */
         .img-portrait { width: 45%; height: 65vh; }
         .img-landscape { width: 60%; height: 50vh; }
         .img-square { width: 40%; height: 40vw; max-height: 500px; }
         .img-wide { width: 100%; height: 60vh; margin-bottom: 5vh; }
 
         .back-nav { position: fixed; top: 40px; left: 60px; z-index: 1000; }
-        .back-nav a { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 1rem; transition: color 0.3s; }
-        .back-nav a:hover { color: #38bdf8; }
+        .back-nav a { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 1rem; }
+        .back-nav a:hover { color: var(--accent-color); }
         .back-nav a i { transition: transform 0.3s; }
         .back-nav a:hover i { transform: translateX(-5px); }
 
-        /* ====================================================
-           GIAO DIỆN ĐIỆN THOẠI CHO ABOUT (EDITORIAL SPREAD)
-           ==================================================== */
         @media (max-width: 900px) {
-            /* Tắt Custom Cursor */
-            body { cursor: auto !important; }
-            .cursor-dot, .cursor-ring { display: none !important; }
-
-            /* Định dạng lại Header */
-            .editorial-board { margin: 80px auto 50px; padding: 0 5%; }
-            .ed-header { margin-bottom: 8vh; text-align: left; }
-            .ed-header h1 { font-size: 3.2rem; }
-            
-            /* Sắp xếp lại ảnh và khối Text để không bị lỗi đè nhau */
-            .fragment { flex-direction: column; margin-bottom: 60px; }
-            .ed-img { width: 100% !important; height: 350px !important; }
-            
-            /* Cho khối Text nổi nhẹ lên góc dưới của ảnh */
-            .ed-text { 
-                position: relative; 
-                width: 90% !important; 
-                margin: -50px auto 0; /* Đẩy khối kính lên đè một chút vào ảnh */
-                padding: 25px; 
-                top: 0 !important; left: 0 !important; right: 0 !important;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            }
-            .ed-text h2 { font-size: 1.8rem; }
-            .ed-text p { font-size: 0.95rem; }
-            
-            /* Chỉnh lại nút Back */
-            .back-nav { 
-                top: 15px; left: 15px; 
-                background: rgba(0,0,0,0.4); 
-                padding: 10px 15px; 
-                border-radius: 50px; 
-                backdrop-filter: blur(10px); 
-            }
+            .fragment { flex-direction: column; margin-bottom: 10vh; transform: none !important; }
+            .ed-img { width: 100% !important; height: 50vh !important; transform: none !important; }
+            .ed-text { position: relative; width: 95% !important; top: -50px !important; left: 0 !important; right: 0 !important; margin: 0 auto; padding: 30px; transform: none !important; }
+            .ed-header h1 { font-size: 3.5rem; }
+            .back-nav { top: 20px; left: 20px; }
+            .mb-palette { flex-wrap: wrap; gap: 15px; justify-content: center; }
+            .swatch { width: 70px; height: 90px; }
         }
     </style>
 </head>
@@ -137,45 +161,60 @@
                 <p>Fragments of a Stoic Lifestyle</p>
             </div>
 
-            <!-- Fragment 1: Tư duy & Cốt lõi -->
-            <div class="fragment frag-left parallax" data-speed="0.05">
-                <div class="ed-img img-portrait scroll-animate hover-target" style="--delay: 0.2s">
+            <div class="mb-palette scroll-animate" style="--delay: 0.2s">
+                <div class="swatch-container active" data-color="#38bdf8" data-rgb="56, 189, 248" data-bg="#020305" data-glass="rgba(20, 21, 26, 0.25)">
+                    <div class="swatch" style="background: #38bdf8;"></div>
+                    <span>SKY BLUE</span>
+                </div>
+                <div class="swatch-container" data-color="#1e3a8a" data-rgb="30, 58, 138" data-bg="#01040a" data-glass="rgba(15, 23, 42, 0.3)">
+                    <div class="swatch" style="background: #1e3a8a;"></div>
+                    <span>MIDNIGHT</span>
+                </div>
+                <div class="swatch-container" data-color="#a1a1aa" data-rgb="161, 161, 170" data-bg="#09090b" data-glass="rgba(24, 24, 27, 0.3)">
+                    <div class="swatch" style="background: #475569;"></div>
+                    <span>SPACE GRAY</span>
+                </div>
+                <div class="swatch-container" data-color="#e2e8f0" data-rgb="226, 232, 240" data-bg="#030303" data-glass="rgba(10, 10, 10, 0.4)">
+                    <div class="swatch" style="background: #030406;"></div>
+                    <span>PITCH BLACK</span>
+                </div>
+            </div>
+
+            <div class="fragment frag-left">
+                <div class="ed-img img-portrait scroll-animate hover-target tilt-target" style="--delay: 0.2s">
                     <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1470&auto=format&fit=crop" alt="Logic">
                 </div>
-                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.4s">
                     <h2>Stoic Logic<span class="dot">.</span></h2>
                     <p>Grounding every action—from debugging complex C++ architectures to interpreting life's chaos—in the principles of Stoicism. Focus only on what can be controlled.</p>
                 </div>
             </div>
 
-            <!-- Fragment 2: Thời trang / Streetwear -->
-            <div class="fragment frag-right parallax" data-speed="0.1">
-                <div class="ed-img img-landscape scroll-animate hover-target" style="--delay: 0.2s">
-                    <img src="wear.jpg" alt="Streetwear">
+            <div class="fragment frag-right">
+                <div class="ed-img img-landscape scroll-animate hover-target tilt-target" style="--delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1523398002811-999aa809511e?q=80&w=1470&auto=format&fit=crop" alt="Streetwear">
                 </div>
-                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.4s">
                     <h2>Dark Minimal<span class="dot">.</span></h2>
                     <p>A preference for oversized silhouettes, earth tones, and unbranded functional pieces. Maintaining a sharp, consistent visual language in everyday wear.</p>
                 </div>
             </div>
 
-            <!-- Fragment 3: Gym & Discipline -->
-            <div class="fragment frag-left parallax" data-speed="0.08">
-                <div class="ed-img img-square scroll-animate hover-target" style="--delay: 0.2s">
-                    <img src="gym.jpg" alt="Iron">
+            <div class="fragment frag-left">
+                <div class="ed-img img-square scroll-animate hover-target tilt-target" style="--delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop" alt="Iron">
                 </div>
-                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.4s">
                     <h2>Iron & Ritual<span class="dot">.</span></h2>
                     <p>Physical health dictates mental acuity. A rigid structure of cutting phases, protein tracking, and relentless consistency in the weight room.</p>
                 </div>
             </div>
 
-            <!-- Fragment 4: Xe cộ & Đồng hồ -->
-            <div class="fragment frag-right parallax" data-speed="0.12">
-                <div class="ed-img img-wide scroll-animate hover-target" style="--delay: 0.2s">
-                    <img src="bmw.avif" alt="Cruising">
+            <div class="fragment frag-right">
+                <div class="ed-img img-wide scroll-animate hover-target tilt-target" style="--delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?q=80&w=1470&auto=format&fit=crop" alt="City Motion">
                 </div>
-                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.4s">
                     <h2>Details & Motion<span class="dot">.</span></h2>
                     <p>Whether navigating the pulse of the city after hours, or appreciating the intricate mechanics of a custom timepiece—true sophistication always lies in the unseen details.</p>
                 </div>
@@ -186,7 +225,7 @@
     </div>
 
     <script>
-        // Custom Cursor Logic
+        // 1. Custom Cursor Logic
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorRing = document.querySelector('.cursor-ring');
         let mouseX = 0, mouseY = 0; let ringX = 0, ringY = 0;
@@ -203,29 +242,67 @@
         }
         requestAnimationFrame(renderCursor);
 
-        const hoverTargets = document.querySelectorAll('.hover-target, a, .ed-img');
+        const hoverTargets = document.querySelectorAll('.hover-target, a, .ed-img, .swatch-container');
         hoverTargets.forEach(target => {
             target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
             target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
         });
 
-        // Scroll Observer
+        // 2. Scroll Observer ( Reveal mượt )
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) entry.target.classList.add('show');
             });
-        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }); 
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }); 
         document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-        // Parallax Effect (Kéo nhẹ các khối khi scroll)
-        window.addEventListener('scroll', () => {
-            if (window.innerWidth > 900) { /* Chỉ chạy parallax trên laptop */
-                const scrolled = window.pageYOffset;
-                document.querySelectorAll('.parallax').forEach(el => {
-                    const speed = el.getAttribute('data-speed');
-                    el.style.transform = `translateY(${scrolled * speed}px)`;
+        // 3. MICRO-INTERACTION: HIỆU ỨNG TILT 3D CAO CẤP
+        const tiltElements = document.querySelectorAll('.tilt-target');
+        
+        if (window.innerWidth > 900) { // Chỉ chạy hiệu ứng trên PC để tối ưu lực vuốt chạm trên ĐT
+            tiltElements.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // Tọa độ X của chuột trong khung vật thể
+                    const y = e.clientY - rect.top;  // Tọa độ Y của chuột trong khung vật thể
+                    
+                    const xc = rect.width / 2;
+                    const yc = rect.height / 2;
+                    
+                    // Tính độ nghiêng tối đa là 10 độ
+                    const angleX = (yc - y) / yc * 10; 
+                    const angleY = (x - xc) / xc * 10;
+                    
+                    el.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
                 });
-            }
+                
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0deg)`;
+                });
+            });
+        }
+
+        // 4. ĐỔI MÀU CHỦ ĐỀ ĐỘNG KHI CLICK SWATCH
+        const swatches = document.querySelectorAll('.swatch-container');
+        swatches.forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                // Xóa trạng thái hoạt động cũ
+                document.querySelector('.swatch-container.active').classList.remove('active');
+                // Kích hoạt ô vừa chọn
+                swatch.classList.add('active');
+                
+                // Trích xuất các thuộc tính màu từ data-attribute
+                const accentColor = swatch.getAttribute('data-color');
+                const accentRGB = swatch.getAttribute('data-rgb');
+                const bodyBG = swatch.getAttribute('data-bg');
+                const glassBG = swatch.getAttribute('data-glass');
+                
+                // Cập nhật biến CSS Root toàn bộ hệ thống
+                document.documentElement.style.setProperty('--accent-color', accentColor);
+                document.documentElement.style.setProperty('--accent-rgb', accentRGB);
+                document.documentElement.style.setProperty('--glass-bg', glassBG);
+                document.body.style.backgroundColor = bodyBG;
+            });
         });
     </script>
 </body>
