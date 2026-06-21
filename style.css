@@ -1,12 +1,11 @@
 /* ====================================================
-   RESET & CƠ BẢN (ĐÃ TỐI ƯU HÓA PHẦN CỨNG)
+   RESET & CƠ BẢN (KHÔNG DÙNG CUSTOM CURSOR)
    ==================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-    cursor: none !important; 
 }
 
 html {
@@ -24,107 +23,84 @@ body {
 }
 
 /* ====================================================
-   HIỆU ỨNG CHUYỂN TRANG (SỬ DỤNG LỚP GPU)
+   HIỆU ỨNG CHUYỂN TRANG
    ==================================================== */
 .page-transition {
-    animation: pageFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    will-change: opacity, transform, filter; /* Tối ưu phần cứng */
+    animation: pageFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: opacity, transform, filter;
 }
 
 @keyframes pageFadeIn {
-    from { opacity: 0; filter: blur(5px); transform: translateY(15px); }
+    from { opacity: 0; filter: blur(8px); transform: translateY(15px); }
     to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 
 /* ====================================================
-   CUSTOM CURSOR (TĂNG TỐC ĐỘ REACTION)
-   ==================================================== */
-.cursor-dot, .cursor-ring {
-    position: fixed;
-    top: 0; left: 0;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 9999;
-    border-radius: 50%;
-    will-change: left, top, width, height; /* Giảm giật lag cho chuột */
-}
-
-.cursor-dot {
-    width: 6px; height: 6px;
-    background-color: #38bdf8;
-}
-
-.cursor-ring {
-    width: 32px; height: 32px;
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                background-color 0.3s, border-color 0.3s;
-}
-
-.cursor-hover .cursor-dot { opacity: 0; }
-.cursor-hover .cursor-ring {
-    width: 50px; height: 50px;
-    background-color: rgba(56, 189, 248, 0.08);
-    border-color: transparent;
-}
-
-/* ====================================================
-   LỚP KÍNH LIQUID GLASS (GIẢM TẢI ĐỘ BLUR ĐỂ THOÁT LAG)
+   LỚP KÍNH CHUẨN APPLE LIQUID GLASS (KHÔI PHỤC SHIMMER)
    ==================================================== */
 .glass-panel {
-    background: rgba(20, 21, 26, 0.3);
-    backdrop-filter: blur(16px) saturate(180%); /* Giảm từ 30px xuống 16px để mượt hơn 50% */
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(20, 21, 26, 0.25);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
+    border-radius: 20px !important; /* Bo góc hệ thống */
 }
 
+/* Đường viền lóa sáng ở mép trên kính */
 .glass-panel::before {
     content: ''; position: absolute;
     top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
     z-index: 10; pointer-events: none;
 }
 
+/* KHÔI PHỤC: Vệt sáng chéo lướt qua khi hover (Tối ưu bằng CSS Transform để không lag) */
 .glass-panel::after {
     content: ''; position: absolute;
     top: 0; left: -150%; width: 50%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
     transform: skewX(-25deg);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 10; pointer-events: none;
 }
-.glass-panel:hover::after { transform: translateX(300%); }
+.glass-panel:hover::after { transform: translateX(350%); }
 
 /* ====================================================
-   LIQUID SHAPES BACKGROUND (GIẢM TẢI ĐỘ PHỨC TẠP)
+   IPHONE MINIMAL SHAPES
    ==================================================== */
 .shape {
-    position: fixed; filter: blur(100px); z-index: -1; opacity: 0.2; 
-    transform: translate3d(0,0,0); /* Ép chạy bằng phần cứng GPU */
+    position: fixed; filter: blur(130px); z-index: -1; opacity: 0.25; 
+    animation: liquidFloat 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
     will-change: transform;
 }
-.shape-1 { width: 40vw; height: 40vw; background: #1e3a8a; top: -10%; left: -10%; }
-.shape-2 { width: 45vw; height: 45vw; background: #0f766e; bottom: -10%; right: -10%; }
-.shape-3 { width: 30vw; height: 30vw; background: #475569; bottom: 20%; left: 20%; }
+.shape-1 { width: 45vw; height: 45vw; background: #1e3a8a; top: -10%; left: -10%; }
+.shape-2 { width: 50vw; height: 50vw; background: #0f766e; bottom: -15%; right: -10%; animation-delay: -5s; }
+.shape-3 { width: 35vw; height: 35vw; background: #475569; bottom: 20%; left: 20%; animation-delay: -10s; }
+
+@keyframes liquidFloat {
+    0% { transform: translate3d(0, 0, 0) scale(1); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    50% { transform: translate3d(4%, 2%, 0) scale(1.05); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    100% { transform: translate3d(-2%, -4%, 0) scale(0.95); border-radius: 50% 50% 30% 70% / 50% 60% 30% 60%; }
+}
 
 /* ====================================================
-   NAVBAR & HERO SECTION
+   THANH ĐIỀU HƯỚNG BẢN DESKTOP
    ==================================================== */
 .navbar {
     position: fixed; top: 0; width: 100%;
     display: flex; justify-content: space-between; align-items: center;
     padding: 30px 60px; z-index: 1000; background: transparent;
-    transition: padding 0.4s ease, background-color 0.4s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.scrolled {
-    background: rgba(2, 3, 5, 0.75); 
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(2, 3, 5, 0.65); 
+    backdrop-filter: blur(25px) saturate(150%);
+    -webkit-backdrop-filter: blur(25px) saturate(150%);
     padding: 15px 60px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -133,33 +109,39 @@ body {
 .nav-links { list-style: none; display: flex; gap: 15px; position: relative; }
 .nav-indicator {
     position: absolute; background: rgba(255, 255, 255, 0.08); 
-    border-radius: 50px; transition: all 0.3s cubic-bezier(0.25, 1, 0.3, 1);
-    opacity: 0; transform: scale(0.8); pointer-events: none; z-index: 0;
+    border-radius: 50px; transition: all 0.35s cubic-bezier(0.25, 1, 0.3, 1);
+    opacity: 0; transform: scale(0.7); pointer-events: none; z-index: 0;
 }
 .nav-links li { position: relative; z-index: 1; }
 .nav-links a {
     display: inline-block; color: #a1a1aa; text-decoration: none;
-    font-weight: 400; font-size: 0.95rem; padding: 10px 24px; transition: color 0.3s;
+    font-weight: 400; font-size: 0.95rem; padding: 10px 24px; transition: color 0.3s ease;
 }
 .nav-links li:hover a { color: #ffffff; }
 
+/* ====================================================
+   HERO SECTION (KHÔI PHỤC LIQUID RING)
+   ==================================================== */
 .hero {
     min-height: 100vh; display: flex; justify-content: center; align-items: center;
     text-align: center; padding-top: 150px; padding-bottom: 80px; position: relative; z-index: 10;
 }
 
-.hero-avatar { width: 150px; height: 150px; margin: 0 auto 40px; position: relative; }
+.hero-avatar { width: 150px; height: 150px; margin: 0 auto 40px; position: relative; display: flex; justify-content: center; align-items: center; }
 .hero-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 2; border: 2px solid rgba(255,255,255,0.05); }
+
+/* KHÔI PHỤC: Liquid Ring Avatar xoay nhịp nhàng */
 .liquid-ring {
-    position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px;
+    position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
     background: linear-gradient(135deg, #38bdf8, #1e3a8a);
-    z-index: 1; opacity: 0.5; filter: blur(8px);
-    animation: spinLiquid 12s linear infinite; /* Chậm lại một chút để đỡ lag CPU */
-    border-radius: 50%;
+    z-index: 1; opacity: 0.5; filter: blur(10px);
+    animation: spinLiquid 10s linear infinite;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
 }
 @keyframes spinLiquid {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    50% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    100% { transform: rotate(360deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
 }
 
 .greeting { font-size: 0.8rem; letter-spacing: 6px; color: #38bdf8; margin-bottom: 20px; font-weight: 500;}
@@ -176,25 +158,34 @@ body {
 .btn-primary, .btn-secondary {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     padding: 16px 36px; text-decoration: none; font-weight: 500; border-radius: 50px;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-primary { background: #ffffff; color: #020305; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,255,255,0.15); }
 .btn-secondary { color: #ffffff; }
-.btn-secondary:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.5); }
+.btn-secondary:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, 0.5); }
+.btn-secondary i { transition: transform 0.4s; }
+.btn-secondary:hover i { transform: translateX(5px); }
 
 /* ====================================================
-   TIMELINE (HỌC VẤN & KINH NGHIỆM)
+   TIMELINE (KHÔI PHỤC GLOW PULSE)
    ==================================================== */
 .timeline { max-width: 800px; margin: 0 auto; border-left: 1px solid rgba(255, 255, 255, 0.1); padding-left: 50px; }
-.timeline-item { margin-bottom: 60px; position: relative; transition: transform 0.3s ease; cursor: pointer; }
-.timeline-item:hover { transform: translateX(6px); }
+.timeline-item { margin-bottom: 60px; position: relative; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+.timeline-item:hover { transform: translateX(8px); }
+
+/* Chấm Glow động mạch đập mượt trên Timeline */
 .timeline-item::before {
     content: ''; position: absolute; left: -56px; top: 8px; width: 12px; height: 12px;
-    background: #ffffff; border-radius: 50%; box-shadow: 0 0 8px #ffffff;
+    background: #ffffff; border-radius: 50%; animation: pulseDot 2.5s infinite;
+}
+@keyframes pulseDot {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
-.timeline-item h3 { color: #ffffff; font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
+.timeline-item h3 { color: #ffffff; font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; transition: color 0.3s; }
 .timeline-item:hover h3 { color: #38bdf8; }
 .timeline-item .date { display: block; color: #71717a; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
 
@@ -206,9 +197,9 @@ body {
 }
 .achievement-card {
     border-radius: 24px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s; cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
 }
-.achievement-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, 0.3); }
+.achievement-card:hover { transform: translateY(-6px); border-color: rgba(56, 189, 248, 0.3); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); }
 .ach-large { grid-row: span 2; }
 .ach-large .ach-icon { font-size: 4rem; margin-bottom: 40px; color: #ffffff; }
 .ach-large h3 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 15px; color: #ffffff; }
@@ -218,20 +209,20 @@ body {
 .ach-small h3 { font-size: 1.4rem; color: #ffffff; margin-bottom: 5px; }
 
 /* ====================================================
-   SCROLL ANIMATIONS (MƯỢT CHO MÁY YẾU)
+   SCROLL ANIMATIONS (MƯỢT & STAGGER TRÊN GPU)
    ==================================================== */
 .scroll-animate {
-    opacity: 0; 
-    transform: translateY(25px); /* Giảm quãng đường di chuyển để mượt hơn */
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0; filter: blur(6px); transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--delay, 0s); 
-    will-change: opacity, transform; /* Kích hoạt phần cứng */
+    will-change: opacity, transform, filter;
 }
-.scroll-animate.show { opacity: 1; transform: translateY(0); }
+.scroll-animate.show { opacity: 1; filter: blur(0); transform: translateY(0); }
 
-.section { padding: 120px 10%; position: relative; z-index: 10; }
-.section-title { font-size: 3rem; color: #ffffff; margin-bottom: 60px; text-align: center; font-weight: 500; }
+.section { padding: 150px 10%; position: relative; z-index: 10; }
+.section-title { font-size: 3rem; color: #ffffff; margin-bottom: 60px; text-align: center; font-weight: 500; letter-spacing: -1px; }
 .bg-darker { background: linear-gradient(180deg, rgba(10,11,15,0) 0%, rgba(10,11,15,0.4) 50%, rgba(10,11,15,0) 100%); }
 
 .contact-container { text-align: center; max-width: 650px; margin: 0 auto; }
@@ -239,18 +230,17 @@ body {
 .social-btn {
     padding: 18px 36px; color: #ffffff; text-decoration: none; border-radius: 50px;
     font-weight: 400; display: flex; align-items: center; gap: 12px;
-    transition: transform 0.3s, color 0.3s;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.social-btn:hover { transform: translateY(-3px); color: #38bdf8;}
+.social-btn:hover { transform: translateY(-4px); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
+
+footer { text-align: center; padding: 60px; color: #52525b; font-size: 0.85rem; letter-spacing: 1px; position: relative; z-index: 10; }
 
 /* ====================================================
    GIAO DIỆN ĐIỆN THOẠI (MOBILE RESPONSIVE)
    ==================================================== */
 @media (max-width: 900px) {
-    body { cursor: auto !important; }
-    .cursor-dot, .cursor-ring { display: none !important; }
-    .shape { display: none !important; } /* Tắt nền chất lỏng trên điện thoại để loại bỏ giật lag tuyệt đối */
-
+    .shape { display: none !important; } /* Tắt nền chất lỏng mờ trên Mobile để tăng hiệu năng tối đa */
     .navbar { padding: 15px 0; flex-direction: column; align-items: flex-start; gap: 15px; width: 100vw; overflow: hidden; }
     .navbar.scrolled { padding: 10px 0; }
     .nav-logo { padding: 0 5%; }
@@ -286,25 +276,4 @@ body {
     .ach-small { height: auto; padding: 25px; }
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
-}
-/* --- ĐỒNG BỘ BO GÓC CAO CẤP CHUẨN APPLE --- */
-
-/* Tất cả các khối kính mờ (Personal Info Card, Achievement Cards, và thẻ text bên About) */
-.glass-panel, .personal-info-card, .achievement-card, .ed-text {
-    border-radius: 20px !important; /* Bo tròn mượt mà thay vì góc vuông */
-}
-
-/* Các khung ảnh lớn nhỏ trên trang Mood Board tạp chí */
-.ed-img, .ed-img img {
-    border-radius: 20px !important; /* Bo góc hệ thống ảnh đồng bộ với khối chữ */
-}
-
-/* Các ô màu trong bảng Palette */
-.swatch {
-    border-radius: 10px !important; /* Ô màu bo góc nhỏ hơn một chút để cân đối */
-}
-
-/* Cập nhật trạng thái lướt qua (Hover) của ảnh để không bị lỗi tràn góc */
-.ed-img {
-    mask-image: -webkit-radial-gradient(white, black); /* Sửa lỗi tràn góc khi zoom trên Safari/Chrome */
 }
