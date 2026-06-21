@@ -75,12 +75,43 @@
         .back-nav a i { transition: transform 0.3s; }
         .back-nav a:hover i { transform: translateX(-5px); }
 
+        /* ====================================================
+           GIAO DIỆN ĐIỆN THOẠI CHO ABOUT (EDITORIAL SPREAD)
+           ==================================================== */
         @media (max-width: 900px) {
-            .fragment { flex-direction: column; margin-bottom: 10vh; }
-            .ed-img { width: 100% !important; height: 50vh !important; }
-            .ed-text { position: relative; width: 95% !important; top: -50px !important; left: 0 !important; right: 0 !important; margin: 0 auto; padding: 30px;}
-            .ed-header h1 { font-size: 3.5rem; }
-            .back-nav { top: 20px; left: 20px; }
+            /* Tắt Custom Cursor */
+            body { cursor: auto !important; }
+            .cursor-dot, .cursor-ring { display: none !important; }
+
+            /* Định dạng lại Header */
+            .editorial-board { margin: 80px auto 50px; padding: 0 5%; }
+            .ed-header { margin-bottom: 8vh; text-align: left; }
+            .ed-header h1 { font-size: 3.2rem; }
+            
+            /* Sắp xếp lại ảnh và khối Text để không bị lỗi đè nhau */
+            .fragment { flex-direction: column; margin-bottom: 60px; }
+            .ed-img { width: 100% !important; height: 350px !important; }
+            
+            /* Cho khối Text nổi nhẹ lên góc dưới của ảnh */
+            .ed-text { 
+                position: relative; 
+                width: 90% !important; 
+                margin: -50px auto 0; /* Đẩy khối kính lên đè một chút vào ảnh */
+                padding: 25px; 
+                top: 0 !important; left: 0 !important; right: 0 !important;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            }
+            .ed-text h2 { font-size: 1.8rem; }
+            .ed-text p { font-size: 0.95rem; }
+            
+            /* Chỉnh lại nút Back */
+            .back-nav { 
+                top: 15px; left: 15px; 
+                background: rgba(0,0,0,0.4); 
+                padding: 10px 15px; 
+                border-radius: 50px; 
+                backdrop-filter: blur(10px); 
+            }
         }
     </style>
 </head>
@@ -188,11 +219,13 @@
 
         // Parallax Effect (Kéo nhẹ các khối khi scroll)
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            document.querySelectorAll('.parallax').forEach(el => {
-                const speed = el.getAttribute('data-speed');
-                el.style.transform = `translateY(${scrolled * speed}px)`;
-            });
+            if (window.innerWidth > 900) { /* Chỉ chạy parallax trên laptop */
+                const scrolled = window.pageYOffset;
+                document.querySelectorAll('.parallax').forEach(el => {
+                    const speed = el.getAttribute('data-speed');
+                    el.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            }
         });
     </script>
 </body>
