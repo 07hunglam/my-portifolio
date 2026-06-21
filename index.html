@@ -10,140 +10,197 @@
 </head>
 <body>
 
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
 
-    <nav class="navbar hidden-animate-fade">
-        <div class="nav-logo">HL.</div>
-        <ul class="nav-links">
-            <div class="nav-indicator"></div>
-            <li><a href="#about">About</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#achievements">Achievements</a></li>
-            <li><a href="#contact">Contacts</a></li>
-        </ul>
-    </nav>
-
-    <header class="hero" id="about">
-        <div class="hero-content">
-            <div class="hero-avatar animate-slide-up" style="--delay: 0.1s">
-                <div class="liquid-ring"></div>
-                <img src="hunglam.jpg" alt="Hung Lam Avatar">
-            </div>
-
-            <p class="greeting animate-slide-up" style="--delay: 0.2s">INTRODUCTION</p>
-            <h1 class="animate-slide-up" style="--delay: 0.4s">Hello, I'm Hung Lam</h1>
-            <p class="tagline animate-slide-up" style="--delay: 0.6s">IT Student • Software Developer • Stoic Explorer</p>
-            
-            <div class="personal-info-card glass-panel animate-slide-up" style="--delay: 0.8s">
-                <ul>
-                    <li><i class="fa-solid fa-user"></i> <strong>Gender:</strong> Male</li>
-                    <li><i class="fa-solid fa-calendar"></i> <strong>Date of Birth:</strong> September 22, 2007</li>
-                    <li><i class="fa-solid fa-graduation-cap"></i> <strong>Education:</strong> K26 Student at University of Science (HCMUS)</li>
-                    <li><i class="fa-solid fa-code"></i> <strong>Expertise:</strong> Computer Science, C/C++, English, Chinese</li>
-                </ul>
-            </div>
-            
-            <a href="#experience" class="btn-primary animate-slide-up" style="--delay: 1.0s">Explore My Journey</a>
-        </div>
-    </header>
-
-    <section id="education" class="section scroll-animate">
-        <h2 class="section-title">Academic Background</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <h3>Industrial University of Ho Chi Minh City (IUH)</h3>
-                <span class="date">August, 2025</span>
-                <p>Majoring in Computer Science & Information Technology. Specialized focus on Data Structures and Algorithms utilizing C/C++.</p>
-            </div>
-            <div class="timeline-item">
-                <h3>ICPC Vietnam National Contest</h3>
-                <span class="date">November, 2025</span>
-                <p>Participated in intensive competitive programming and algorithmic challenges alongside the university's elite team.</p>
-            </div>
-            <div class="timeline-item">
-                <h3>Future Academic Orientation</h3>
-                <span class="date">Upcoming</span>
-                <p>Conducting in-depth research and mapping a structured academic pathway toward the University of Science (HCMUS).</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="experience" class="section bg-darker scroll-animate">
-        <h2 class="section-title">Extracurricular & Projects</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <h3>Promotional Campaign for "Tài" Short Film</h3>
-                <span class="date">Early 2026</span>
-                <p>Directed scriptwriting, managed Public Relations content, and executed professional video editing for the film's media campaign.</p>
-            </div>
-            <div class="timeline-item">
-                <h3>Web Development & System Programming</h3>
-                <span class="date">Personal Initiatives</span>
-                <p>Architecting optimized algorithms in C/C++, exploring deep system architectures, and implementing independent software development lifecycles.</p>
-            </div>
-            <div class="timeline-item">
-                <h3>Language Proficiency Pursuit</h3>
-                <span class="date">English & Mandarin</span>
-                <p>Actively advancing linguistic capabilities, currently undertaking studies for HSK 4 and IELTS 8.0 certifications.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="achievements" class="section scroll-animate">
-        <h2 class="section-title">Key Achievements</h2>
-        <p class="section-desc">Milestones in my academic and personal development journey.</p>
+    <div class="page-transition">
         
-        <div class="achievements-grid">
-            <div class="achievement-card glass-panel">
-                <div class="ach-icon"><i class="fa-solid fa-language"></i></div>
-                <h3>IELTS 7.5</h3>
-                <p>Advanced English Proficiency</p>
-            </div>
-            <div class="achievement-card glass-panel">
-                <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
-                <h3>ICPC National</h3>
-                <p>Vietnam National Contest Participant</p>
-            </div>
-            <div class="achievement-card glass-panel">
-                <div class="ach-icon"><i class="fa-solid fa-yin-yang"></i></div>
-                <h3>HSK 3</h3>
-                <p>Mandarin Chinese Certification</p>
-            </div>
-        </div>
-    </section>
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
 
-    <section id="contact" class="section bg-darker scroll-animate">
-        <h2 class="section-title">Contacts</h2>
-        <div class="contact-container">
-            <p>I am always open to discussing new collaborative opportunities, technological innovations, or simply enjoying a coffee chat about life.</p>
-            <div class="contact-links">
-                <a href="mailto:hunglam220907@gmail.com" class="social-btn glass-panel"><i class="fa-solid fa-envelope"></i> Email</a>
-                <a href="https://www.facebook.com/07.hunglam/" target="_blank" class="social-btn glass-panel"><i class="fa-brands fa-facebook"></i> Facebook</a>
-                <a href="https://www.instagram.com/07_hunglam/" target="_blank" class="social-btn glass-panel"><i class="fa-brands fa-instagram"></i> Instagram</a>
+        <nav class="navbar scroll-animate" style="--delay: 0s;">
+            <div class="nav-logo">HL.</div>
+            <ul class="nav-links">
+                <div class="nav-indicator"></div>
+                <li><a href="#about" class="hover-target">About</a></li>
+                <li><a href="#education" class="hover-target">Education</a></li>
+                <li><a href="#experience" class="hover-target">Experience</a></li>
+                <li><a href="#achievements" class="hover-target">Achievements</a></li>
+                <li><a href="#contact" class="hover-target">Contacts</a></li>
+            </ul>
+        </nav>
+
+        <header class="hero" id="about">
+            <div class="hero-content">
+                <div class="hero-avatar scroll-animate" style="--delay: 0.1s">
+                    <div class="liquid-ring"></div>
+                    <img src="hunglam.jpg" alt="Hung Lam Avatar">
+                </div>
+
+                <p class="greeting scroll-animate" style="--delay: 0.2s">INTRODUCTION</p>
+                <h1 class="scroll-animate" style="--delay: 0.3s">Hello, I'm Hung Lam</h1>
+                <p class="tagline scroll-animate" style="--delay: 0.4s">
+                    <span style="letter-spacing: 2px;">IT STUDENT</span> 
+                    <span class="accent-dot">•</span> SOFTWARE DEVELOPER 
+                    <span class="accent-dot">•</span> STOIC EXPLORER
+                </p>
+                
+                <div class="personal-info-card glass-panel scroll-animate" style="--delay: 0.5s">
+                    <ul>
+                        <li><i class="fa-solid fa-user"></i> <strong>Gender:</strong> Male</li>
+                        <li><i class="fa-solid fa-calendar"></i> <strong>Date of Birth:</strong> September 22, 2007</li>
+                        <li><i class="fa-solid fa-graduation-cap"></i> <strong>Education:</strong> K26 HCMUS - University of Science</li>
+                        <li><i class="fa-solid fa-code"></i> <strong>Expertise:</strong> Computer Science, C/C++, English, Chinese</li>
+                    </ul>
+                </div>
+                
+                <div class="hero-buttons scroll-animate" style="--delay: 0.6s">
+                    <a href="#experience" class="btn-primary hover-target">Explore My Journey</a>
+                    <a href="about.html" class="btn-secondary glass-panel hover-target">Beyond the Code <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <footer>
-        <p>© 2026 Hung Lam. Designed with elegance and purpose.</p>
-    </footer>
+        <section id="education" class="section">
+            <h2 class="section-title scroll-animate" style="--delay: 0s">Academic Background</h2>
+            <div class="timeline">
+                <div class="timeline-item scroll-animate hover-target" style="--delay: 0.1s">
+                    <span class="date">August, 2025</span>
+                    <h3>Industrial University of Ho Chi Minh City (IUH)</h3>
+                    <p>Focused foundation on Data Structures and Algorithms utilizing C/C++.</p>
+                </div>
+                <div class="timeline-item scroll-animate hover-target" style="--delay: 0.2s">
+                    <span class="date">November, 2025</span>
+                    <h3>ICPC Vietnam National Contest</h3>
+                    <p>Participated in intensive algorithmic challenges alongside the university elite team.</p>
+                </div>
+                <div class="timeline-item scroll-animate hover-target" style="--delay: 0.3s">
+                    <span class="date">Upcoming</span>
+                    <h3>University of Science (HCMUS)</h3>
+                    <p>Mapping a structured academic pathway toward advanced Computer Science research.</p>
+                </div>
+            </div>
+        </section>
 
+        <section id="experience" class="section bg-darker">
+            <h2 class="section-title scroll-animate" style="--delay: 0s">Projects & Focus</h2>
+            <div class="timeline">
+                <div class="timeline-item scroll-animate hover-target" style="--delay: 0.1s">
+                    <span class="date">Early 2026</span>
+                    <h3>"Tài" Short Film Campaign</h3>
+                    <p>Directed scriptwriting and executed professional PR content editing.</p>
+                </div>
+                <div class="timeline-item scroll-animate hover-target" style="--delay: 0.2s">
+                    <span class="date">Ongoing</span>
+                    <h3>System Architecture & Algorithms</h3>
+                    <p>Architecting optimized software lifecycles and deep C/C++ implementations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="section">
+            <h2 class="section-title scroll-animate" style="--delay: 0s">Key Milestones</h2>
+            
+            <div class="achievements-grid">
+                <!-- Thẻ Lớn (Asymmetrical Layout) -->
+                <div class="achievement-card ach-large glass-panel scroll-animate hover-target" style="--delay: 0.1s">
+                    <div class="ach-icon"><i class="fa-solid fa-language"></i></div>
+                    <div>
+                        <h3>IELTS 7.5 & HSK 3</h3>
+                        <p>Advanced Linguistic Capabilities</p>
+                        <span style="color: #71717a; font-size: 0.95rem;">Pursuing IELTS 8.0 & HSK 4</span>
+                    </div>
+                </div>
+                
+                <!-- 2 Thẻ Nhỏ xếp chồng lên nhau -->
+                <div class="achievement-card ach-small glass-panel scroll-animate hover-target" style="--delay: 0.2s">
+                    <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <h3>ICPC National</h3>
+                    <p style="color: #a1a1aa; font-size: 0.9rem;">National Level Contestant</p>
+                </div>
+                
+                <div class="achievement-card ach-small glass-panel scroll-animate hover-target" style="--delay: 0.3s">
+                    <div class="ach-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3>C/C++ Mastery</h3>
+                    <p style="color: #a1a1aa; font-size: 0.9rem;">Algorithmic Optimization</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section bg-darker">
+            <h2 class="section-title scroll-animate" style="--delay: 0s">Contacts</h2>
+            <div class="contact-container">
+                <p class="scroll-animate" style="--delay: 0.1s">Open to collaborative opportunities or a simple tech conversation.</p>
+                <div class="contact-links">
+                    <a href="mailto:hunglam220907@gmail.com" class="social-btn glass-panel scroll-animate hover-target" style="--delay: 0.2s"><i class="fa-solid fa-envelope"></i> Email</a>
+                    <a href="https://www.facebook.com/07.hunglam/" target="_blank" class="social-btn glass-panel scroll-animate hover-target" style="--delay: 0.3s"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                    <a href="https://www.instagram.com/07_hunglam/" target="_blank" class="social-btn glass-panel scroll-animate hover-target" style="--delay: 0.4s"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Hung Lam. Designed with elegance and purpose.</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT CHÍNH XÁC -->
     <script>
+        // 1. Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        // Loop mượt cho Ring đi theo sau Dot
+        function renderCursor() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        // Hiệu ứng Hover Cursor
+        const hoverTargets = document.querySelectorAll('.hover-target, a, .timeline-item, .achievement-card');
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // 2. Scroll Animation (Stagger Delay)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
                 }
             });
-        }, { threshold: 0.1 }); 
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }); 
 
-        const hiddenElements = document.querySelectorAll('.scroll-animate');
-        hiddenElements.forEach((el) => observer.observe(el));
+        document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-        // Liquid Indicator cho Navbar
+        // 3. Navbar Scroll Blur & Transform
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 4. Liquid Indicator Navbar
         const navLinks = document.querySelectorAll('.nav-links li');
         const indicator = document.querySelector('.nav-indicator');
         const navMenu = document.querySelector('.nav-links');
@@ -152,7 +209,6 @@
             link.addEventListener('mouseenter', (e) => {
                 const rect = link.getBoundingClientRect();
                 const parentRect = navMenu.getBoundingClientRect();
-                
                 indicator.style.width = `${rect.width}px`;
                 indicator.style.height = `${rect.height}px`;
                 indicator.style.left = `${rect.left - parentRect.left}px`;
@@ -161,7 +217,6 @@
                 indicator.style.transform = 'scale(1)';
             });
         });
-
         navMenu.addEventListener('mouseleave', () => {
             indicator.style.opacity = '0';
             indicator.style.transform = 'scale(0.5)';

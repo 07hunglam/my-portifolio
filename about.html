@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Spread | Hung Lam</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Editorial Spread Layout */
+        .editorial-board {
+            position: relative;
+            max-width: 1200px;
+            margin: 150px auto 100px;
+            padding: 0 5%;
+            z-index: 10;
+        }
+
+        .ed-header { margin-bottom: 15vh; }
+        .ed-header h1 { font-size: 5rem; font-weight: 300; letter-spacing: -2px; color: #fff; line-height: 1.1; }
+        .ed-header h1 span { font-style: italic; color: #38bdf8; font-weight: 400; }
+        .ed-header p { font-size: 1.1rem; letter-spacing: 2px; color: #71717a; text-transform: uppercase; margin-top: 20px;}
+
+        /* Từng mảnh ghép (Fragment) của Layout Bất Đối Xứng */
+        .fragment {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20vh;
+            position: relative;
+        }
+
+        .frag-left { justify-content: flex-start; }
+        .frag-right { justify-content: flex-end; }
+
+        /* Hình ảnh Editorial */
+        .ed-img {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border-radius: 12px; /* Góc sắc hơn một chút theo tạp chí */
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        }
+        .ed-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+        .fragment:hover .ed-img img { transform: scale(1.05); }
+
+        /* Floating Text Box (Overlapping) */
+        .ed-text {
+            position: absolute;
+            z-index: 5;
+            width: 45%;
+            padding: 50px;
+            text-align: left;
+        }
+        .frag-left .ed-text { right: 5%; top: 30%; }
+        .frag-right .ed-text { left: 5%; bottom: -15%; }
+
+        .ed-text h2 { font-size: 2.5rem; color: #fff; margin-bottom: 15px; letter-spacing: -1px; }
+        .ed-text h2 .dot { color: #38bdf8; }
+        .ed-text p { font-size: 1.05rem; color: #a1a1aa; line-height: 1.8; }
+
+        /* Kích thước cụ thể cho từng ảnh */
+        .img-portrait { width: 45%; height: 65vh; }
+        .img-landscape { width: 60%; height: 50vh; }
+        .img-square { width: 40%; height: 40vw; max-height: 500px; }
+        .img-wide { width: 100%; height: 60vh; margin-bottom: 5vh; }
+
+        .back-nav { position: fixed; top: 40px; left: 60px; z-index: 1000; }
+        .back-nav a { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 1rem; transition: color 0.3s; }
+        .back-nav a:hover { color: #38bdf8; }
+        .back-nav a i { transition: transform 0.3s; }
+        .back-nav a:hover i { transform: translateX(-5px); }
+
+        @media (max-width: 900px) {
+            .fragment { flex-direction: column; margin-bottom: 10vh; }
+            .ed-img { width: 100% !important; height: 50vh !important; }
+            .ed-text { position: relative; width: 95% !important; top: -50px !important; left: 0 !important; right: 0 !important; margin: 0 auto; padding: 30px;}
+            .ed-header h1 { font-size: 3.5rem; }
+            .back-nav { top: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <div class="page-transition">
+        
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+
+        <div class="back-nav scroll-animate" style="--delay: 0s">
+            <a href="index.html" class="hover-target"><i class="fa-solid fa-arrow-left"></i> Home</a>
+        </div>
+
+        <div class="editorial-board">
+            
+            <div class="ed-header scroll-animate" style="--delay: 0.1s">
+                <h1>The <span>Aesthetic</span><br>Identity.</h1>
+                <p>Fragments of a Stoic Lifestyle</p>
+            </div>
+
+            <!-- Fragment 1: Tư duy & Cốt lõi -->
+            <div class="fragment frag-left parallax" data-speed="0.05">
+                <div class="ed-img img-portrait scroll-animate hover-target" style="--delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1470&auto=format&fit=crop" alt="Logic">
+                </div>
+                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                    <h2>Stoic Logic<span class="dot">.</span></h2>
+                    <p>Grounding every action—from debugging complex C++ architectures to interpreting life's chaos—in the principles of Stoicism. Focus only on what can be controlled.</p>
+                </div>
+            </div>
+
+            <!-- Fragment 2: Thời trang / Streetwear -->
+            <div class="fragment frag-right parallax" data-speed="0.1">
+                <div class="ed-img img-landscape scroll-animate hover-target" style="--delay: 0.2s">
+                    <img src="wear.jpg" alt="Streetwear">
+                </div>
+                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                    <h2>Dark Minimal<span class="dot">.</span></h2>
+                    <p>A preference for oversized silhouettes, earth tones, and unbranded functional pieces. Maintaining a sharp, consistent visual language in everyday wear.</p>
+                </div>
+            </div>
+
+            <!-- Fragment 3: Gym & Discipline -->
+            <div class="fragment frag-left parallax" data-speed="0.08">
+                <div class="ed-img img-square scroll-animate hover-target" style="--delay: 0.2s">
+                    <img src="gym.jpg" alt="Iron">
+                </div>
+                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                    <h2>Iron & Ritual<span class="dot">.</span></h2>
+                    <p>Physical health dictates mental acuity. A rigid structure of cutting phases, protein tracking, and relentless consistency in the weight room.</p>
+                </div>
+            </div>
+
+            <!-- Fragment 4: Xe cộ & Đồng hồ -->
+            <div class="fragment frag-right parallax" data-speed="0.12">
+                <div class="ed-img img-wide scroll-animate hover-target" style="--delay: 0.2s">
+                    <img src="bmw.avif" alt="Cruising">
+                </div>
+                <div class="ed-text glass-panel scroll-animate hover-target" style="--delay: 0.4s">
+                    <h2>Details & Motion<span class="dot">.</span></h2>
+                    <p>Whether navigating the pulse of the city after hours, or appreciating the intricate mechanics of a custom timepiece—true sophistication always lies in the unseen details.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        let mouseX = 0, mouseY = 0; let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function renderCursor() {
+            ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = `${ringX}px`; cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        const hoverTargets = document.querySelectorAll('.hover-target, a, .ed-img');
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Scroll Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }); 
+        document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
+
+        // Parallax Effect (Kéo nhẹ các khối khi scroll)
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('.parallax').forEach(el => {
+                const speed = el.getAttribute('data-speed');
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
