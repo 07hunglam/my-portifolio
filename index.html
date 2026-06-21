@@ -50,6 +50,7 @@
                         <li><i class="fa-solid fa-calendar"></i> <strong>Date of Birth:</strong> September 22, 2007</li>
                         <li><i class="fa-solid fa-graduation-cap"></i> <strong>Education:</strong> K26 HCMUS - University of Science</li>
                         <li><i class="fa-solid fa-code"></i> <strong>Expertise:</strong> Computer Science, C/C++, English, Chinese</li>
+                        <li><i class="fa-solid fa-eye"></i> <strong>Total Views:</strong> <span id="view-counter">Loading...</span></li>
                     </ul>
                 </div>
                 
@@ -142,6 +143,24 @@
     </div>
 
     <script>
+        // Hàm xử lý gọi API cập nhật bộ đếm lượt xem không đồng bộ
+        async function updateVisitorCounter() {
+            try {
+                const response = await fetch('/api/counter', { method: 'POST' });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('view-counter').textContent = Number(data.visitor_count).toLocaleString();
+                } else {
+                    document.getElementById('view-counter').textContent = '---';
+                }
+            } catch (error) {
+                console.error('Lỗi kết nối API:', error);
+                document.getElementById('view-counter').textContent = 'Offline';
+            }
+        }
+        // Gọi hàm thực thi ngay khi cấu trúc tài liệu sẵn sàng
+        document.addEventListener('DOMContentLoaded', updateVisitorCounter);
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -152,12 +171,12 @@
 
         document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-        const navbar = document.querySelector('.navbar');
+       const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 40) {
                 navbar.classList.add('scrolled');
             } else {
-                navbar.classList.remove('scrolled');
+                navbar.classList.remove('scrolled'); // Khôi phục trạng thái transparent khi lên đỉnh trang
             }
         }, { passive: true });
 
