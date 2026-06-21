@@ -197,3 +197,19 @@ body {
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
 }
+/* --- HIỆU ỨNG PHÁT SÁNG MỜ KHI HOVER (SUBTLE GLOW EFFECT) --- */
+.glass-panel {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+    will-change: transform, box-shadow; /* Tối ưu hóa GPU để tăng độ mượt */
+}
+
+.glass-panel:hover {
+    border-color: rgba(var(--accent-rgb, 56, 189, 248), 0.2) !important;
+    /* Đổ bóng phát sáng nhẹ đồng bộ theo mã màu hệ thống */
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5), 
+        0 0 40px rgba(var(--accent-rgb, 56, 189, 248), 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
