@@ -3,146 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aesthetic Spread | Hung Lam</title>
+    <title>Aesthetic Lookbook | Hung Lam</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- ĐỊNH NGHĨA BIẾN MÀU CHỦ ĐỀ ĐỘNG (DYNAMIC THEME) --- */
         :root {
             --accent-color: #38bdf8;
             --accent-rgb: 56, 189, 248;
-            --glass-bg: rgba(20, 21, 26, 0.25);
+            --glass-bg: rgba(20, 21, 26, 0.3);
             --body-bg: #020305;
         }
 
-        body, .ed-text, .back-nav a, h2, p, span {
-            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                        color 0.4s ease, 
-                        border-color 0.4s ease;
+        body, .magazine-text, .back-nav a, h2, p, span, .outline-text {
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, border-color 0.4s ease, -webkit-text-stroke 0.4s ease;
         }
 
-        /* Editorial Spread Layout */
+        /* --- MAGAZINE TYPOGRAPHY & LOOKBOOK STYLES --- */
         .editorial-board {
-            position: relative;
-            max-width: 1200px;
-            margin: 150px auto 100px;
-            padding: 0 5%;
-            z-index: 10;
+            position: relative; max-width: 1300px; margin: 150px auto 100px; padding: 0 5%; z-index: 10;
         }
 
-        .ed-header { margin-bottom: 12vh; }
-        .ed-header h1 { font-size: 5rem; font-weight: 300; letter-spacing: -2px; color: #fff; line-height: 1.1; }
-        .ed-header h1 span { font-style: italic; color: var(--accent-color); font-weight: 400; }
-        .ed-header p { font-size: 1.1rem; letter-spacing: 2px; color: #71717a; text-transform: uppercase; margin-top: 20px;}
-
-        /* Từng mảnh ghép (Fragment) của Layout Bất Đối Xứng */
-        .fragment {
-            display: flex;
-            align-items: center;
-            margin-bottom: 28vh; /* Tăng nhẹ khoảng cách để layout thoáng đãng như tạp chí */
-            position: relative;
-            perspective: 1000px; /* Phục vụ tính năng 3D Tilt */
+        /* Cover Type */
+        .cover-header { margin-bottom: 18vh; position: relative; }
+        .cover-header h1 { font-family: 'Playfair Display', serif; font-size: 8rem; font-weight: 700; line-height: 0.9; letter-spacing: -3px; color: #fff; text-transform: uppercase; }
+        .cover-header h1 .italic-stroke {
+            font-style: italic; font-weight: 400; color: transparent;
+            -webkit-text-stroke: 1.5px var(--accent-color);
+            display: block; margin-left: 10%;
         }
+        .cover-header .issue-meta { font-size: 1rem; letter-spacing: 4px; color: #71717a; text-transform: uppercase; margin-top: 40px; display: flex; gap: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;}
 
-        .frag-left { justify-content: flex-start; }
-        .frag-right { justify-content: flex-end; }
+        /* Bảng màu tối giản */
+        .mb-palette { display: flex; gap: 20px; max-width: 500px; margin: 0 0 15vh 0; }
+        .swatch-container { cursor: pointer; transition: transform 0.2s ease; }
+        .swatch-container:hover { transform: translateY(-4px); }
+        .swatch { width: 50px; height: 50px; border-radius: 50%; box-shadow: 2px 5px 15px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); transition: border-color 0.3s; }
+        .swatch-container.active .swatch { border-color: #ffffff; box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.5); }
 
-        /* Hình ảnh Editorial (Đã tối ưu hóa layer bo góc 20px) */
-        .ed-img {
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            border-radius: 20px !important;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            transform-style: preserve-3d;
-            transition: transform 0.2s ease-out;
-            will-change: transform;
-        }
-        .ed-img img {
-            width: 100%; height: 100%; object-fit: cover;
-            border-radius: 20px !important;
-            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform;
-        }
-        .fragment:hover .ed-img img { transform: scale(1.04); }
+        /* Các khối Chapter (Typography + Image Grids) */
+        .chapter { margin-bottom: 25vh; position: relative; display: grid; gap: 60px; align-items: center; }
+        
+        .chapter-title { font-family: 'Playfair Display', serif; font-size: 4rem; color: #fff; line-height: 1.1; margin-bottom: 20px;}
+        .chapter-title .dot { color: var(--accent-color); }
+        
+        .outline-num { position: absolute; font-family: 'Playfair Display', serif; font-size: 16rem; font-weight: 700; color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.05); z-index: -1; line-height: 0.8; user-select: none;}
 
-        /* Floating Text Box (Premium Glass bo góc 20px) */
-        .ed-text {
-            position: absolute;
-            z-index: 5;
-            width: 45%;
-            padding: 45px;
-            text-align: left;
-            border-radius: 20px !important;
-            transform-style: preserve-3d;
-            transition: transform 0.2s ease-out, background-color 0.4s, border-color 0.4s;
-            border: 1px solid rgba(var(--accent-rgb), 0.1); 
-            will-change: transform;
-        }
-        .frag-left .ed-text { right: 5%; top: 30%; }
-        .frag-right .ed-text { left: 5%; bottom: -15%; }
+        .magazine-text { font-size: 1.15rem; color: #a1a1aa; line-height: 1.9; font-weight: 300; }
+        
+        /* UI Elements */
+        .pull-quote { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent-color); font-style: italic; line-height: 1.3; border-left: 4px solid var(--accent-color); padding-left: 30px; margin: 30px 0;}
+        .tag-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px; }
+        .tag-chip { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
+        .stat-callout { display: flex; flex-direction: column; background: var(--glass-bg); padding: 35px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .stat-callout .huge-num { font-size: 4rem; font-weight: 600; color: #fff; line-height: 1;}
+        .stat-callout .stat-label { color: var(--accent-color); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
+        .accent-stripe { font-family: 'Playfair Display', serif; font-size: 6rem; color: transparent; -webkit-text-stroke: 1px var(--accent-color); white-space: nowrap; overflow: hidden; opacity: 0.3; margin-bottom: 20px; }
 
-        .ed-text h2 { font-size: 2.3rem; color: #fff; margin-bottom: 12px; letter-spacing: -1px; }
-        .ed-text h2 .dot { color: var(--accent-color); }
-        .ed-text p { font-size: 1.02rem; color: #a1a1aa; line-height: 1.8; }
+        /* Hình ảnh Lookbook */
+        .img-wrapper { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.6); will-change: transform; z-index: 2;}
+        .mag-img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
+        .img-wrapper:hover .mag-img { transform: scale(1.05); }
 
-        .premium-glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
+        /* GRID A: Trái Ảnh, Phải Text */
+        .grid-a { grid-template-columns: 1fr 1.2fr; }
+        .grid-a .outline-num { top: -80px; left: -40px; }
+        .grid-a .img-wrapper { height: 65vh; }
+        
+        /* GRID B: Trái Text, Phải Ảnh */
+        .grid-b { grid-template-columns: 1.2fr 1fr; text-align: right; }
+        .grid-b .outline-num { top: -60px; right: -30px; }
+        .grid-b .tag-chips { justify-content: flex-end; }
+        .grid-b .pull-quote { border-left: none; border-right: 4px solid var(--accent-color); padding-left: 0; padding-right: 30px; }
+        .grid-b .img-wrapper { height: 55vh; }
 
-        /* BẢNG MÀU TƯƠNG TÁC */
-        .mb-palette {
-            display: flex;
-            justify-content: space-between;
-            max-width: 500px;
-            margin: 0 0 12vh 0;
-        }
-        .swatch-container { text-align: center; cursor: pointer; transition: transform 0.3s ease; }
-        .swatch-container:hover { transform: translateY(-6px); }
-        .swatch { 
-            width: 85px; height: 110px; margin-bottom: 12px; border-radius: 12px !important; 
-            box-shadow: 2px 10px 20px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); 
-            transition: border-color 0.3s, transform 0.3s;
-        }
-        .swatch-container.active .swatch {
-            border-color: #ffffff;
-            transform: scale(1.03);
-            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);
-        }
-        .swatch-container span { font-size: 0.75rem; color: #a1a1aa; letter-spacing: 1.5px; font-weight: 500;}
-        .swatch-container.active span { color: #ffffff; }
+        /* GRID C: Ảnh Nhỏ - Stat - Text */
+        .grid-c { grid-template-columns: 0.8fr 0.8fr 1.4fr; }
+        .grid-c .outline-num { top: -100px; left: 35%; }
+        .grid-c .img-wrapper { height: 40vh; }
 
-        /* Kích thước ảnh tạp chí */
-        .img-portrait { width: 45%; height: 65vh; }
-        .img-landscape { width: 60%; height: 50vh; }
-        .img-square { width: 40%; height: 40vw; max-height: 500px; }
-        .img-wide { width: 100%; height: 60vh; margin-bottom: 5vh; }
+        /* GRID D: Stripe ngang, Chữ trên, Ảnh lớn dưới */
+        .grid-d { grid-template-columns: 1fr; text-align: center; gap: 30px;}
+        .grid-d .outline-num { top: 60px; right: 5%; font-size: 20rem;}
+        .grid-d .magazine-text { max-width: 700px; margin: 0 auto; }
+        .grid-d .tag-chips { justify-content: center; margin-bottom: 20px;}
+        .grid-d .img-wrapper { height: 60vh; width: 100%; margin-top: 20px;}
 
         .back-nav { position: fixed; top: 40px; left: 60px; z-index: 1000; }
-        .back-nav a { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 1rem; }
+        .back-nav a { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 1rem; transition: color 0.3s;}
         .back-nav a:hover { color: var(--accent-color); }
-        .back-nav a i { transition: transform 0.3s; }
-        .back-nav a:hover i { transform: translateX(-5px); }
-
-        /* Tối ưu hiệu năng chuyển động dịch vị trí */
-        .parallax {
-            will-change: transform;
-        }
+        .parallax { will-change: transform; }
 
         @media (max-width: 900px) {
-            .fragment { flex-direction: column; margin-bottom: 8vh; transform: none !important; }
-            .ed-img { width: 100% !important; height: 45vh !important; transform: none !important; border-radius: 16px !important;}
-            .ed-img img { border-radius: 16px !important; }
-            .ed-text { position: relative; width: 95% !important; top: -40px !important; left: 0 !important; right: 0 !important; margin: 0 auto; padding: 25px; transform: none !important; border-radius: 16px !important;}
-            .ed-header h1 { font-size: 3.5rem; }
+            .cover-header h1 { font-size: 4rem; }
+            .cover-header h1 .italic-stroke { margin-left: 0; }
+            .chapter { grid-template-columns: 1fr !important; text-align: left !important; gap: 30px; margin-bottom: 15vh;}
+            .grid-b { display: flex; flex-direction: column-reverse; } /* Đảo ngược để chữ nằm dưới ảnh trên mobile */
+            .outline-num { font-size: 8rem !important; left: -10px !important; top: -30px !important; }
+            .grid-b .tag-chips { justify-content: flex-start; }
+            .grid-b .pull-quote { border-right: none; border-left: 4px solid var(--accent-color); padding-right: 0; padding-left: 30px; }
+            .img-wrapper { height: 40vh !important; }
             .back-nav { top: 20px; left: 20px; }
-            .mb-palette { flex-wrap: wrap; gap: 15px; justify-content: center; }
-            .swatch { width: 70px; height: 90px; border-radius: 10px !important;}
         }
     </style>
 </head>
@@ -150,78 +112,101 @@
 
     <div class="page-transition">
         
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-
-        <div class="back-nav scroll-animate" style="--delay: 0s">
+        <div class="back-nav scroll-animate" style="--delay: 0.05s">
             <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Home</a>
         </div>
 
         <div class="editorial-board">
             
-            <div class="ed-header scroll-animate" style="--delay: 0.1s">
-                <h1>The <span>Aesthetic</span><br>Identity.</h1>
-                <p>Fragments of a Stoic Lifestyle</p>
+            <!-- TẠP CHÍ COVER -->
+            <div class="cover-header scroll-animate" style="--delay: 0.1s">
+                <h1>The Core<span class="italic-stroke">Identity.</span></h1>
+                <div class="issue-meta">
+                    <span>Issue 01</span>
+                    <span>Stoic Lifestyle</span>
+                    <span>Editorial Spread</span>
+                </div>
             </div>
 
+            <!-- BẢNG MÀU CHỦ ĐỀ ĐỘNG -->
             <div class="mb-palette scroll-animate" style="--delay: 0.15s">
-                <div class="swatch-container active" data-color="#38bdf8" data-rgb="56, 189, 248" data-bg="#020305" data-glass="rgba(20, 21, 26, 0.25)">
+                <div class="swatch-container active" data-color="#38bdf8" data-rgb="56, 189, 248" data-bg="#020305" data-glass="rgba(20, 21, 26, 0.3)">
                     <div class="swatch" style="background: #38bdf8;"></div>
-                    <span>SKY BLUE</span>
                 </div>
-                <div class="swatch-container" data-color="#1e3a8a" data-rgb="30, 58, 138" data-bg="#01040a" data-glass="rgba(15, 23, 42, 0.3)">
+                <div class="swatch-container" data-color="#1e3a8a" data-rgb="30, 58, 138" data-bg="#01040a" data-glass="rgba(15, 23, 42, 0.4)">
                     <div class="swatch" style="background: #1e3a8a;"></div>
-                    <span>MIDNIGHT</span>
                 </div>
-                <div class="swatch-container" data-color="#a1a1aa" data-rgb="161, 161, 170" data-bg="#09090b" data-glass="rgba(24, 24, 27, 0.3)">
+                <div class="swatch-container" data-color="#a1a1aa" data-rgb="161, 161, 170" data-bg="#09090b" data-glass="rgba(24, 24, 27, 0.4)">
                     <div class="swatch" style="background: #475569;"></div>
-                    <span>SPACE GRAY</span>
                 </div>
-                <div class="swatch-container" data-color="#e2e8f0" data-rgb="226, 232, 240" data-bg="#030303" data-glass="rgba(10, 10, 10, 0.4)">
-                    <div class="swatch" style="background: #030406;"></div>
-                    <span>PITCH BLACK</span>
+                <div class="swatch-container" data-color="#e2e8f0" data-rgb="226, 232, 240" data-bg="#030303" data-glass="rgba(10, 10, 10, 0.5)">
+                    <div class="swatch" style="background: #e2e8f0;"></div>
                 </div>
             </div>
 
-            <!-- Các block Fragment chứa dữ liệu cấu trúc -->
-            <div class="fragment frag-left parallax" data-speed="8">
-                <div class="ed-img img-portrait scroll-animate hover-target tilt-target" style="--delay: 0.2s">
-                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1470&auto=format&fit=crop" alt="Logic">
+            <!-- CHAP 1: GRID A (Trái Ảnh, Phải Text) -->
+            <div class="chapter grid-a scroll-animate" style="--delay: 0.2s">
+                <div class="outline-num">01</div>
+                <div class="img-wrapper parallax" data-speed="12">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1470&auto=format&fit=crop" class="mag-img" alt="Logic">
                 </div>
-                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.3s">
-                    <h2>Stoic Logic<span class="dot">.</span></h2>
-                    <p>Grounding every action—from debugging complex C++ architectures to interpreting life's chaos—in the principles of Stoicism. Focus only on what can be controlled.</p>
-                </div>
-            </div>
-
-            <div class="fragment frag-right parallax" data-speed="-6">
-                <div class="ed-img img-landscape scroll-animate hover-target tilt-target" style="--delay: 0.2s">
-                    <img src="wear.jpg" alt="Streetwear">
-                </div>
-                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.3s">
-                    <h2>Dark Minimal<span class="dot">.</span></h2>
-                    <p>A preference for oversized silhouettes, earth tones, and unbranded functional pieces. Maintaining a sharp, consistent visual language in everyday wear.</p>
+                <div>
+                    <h2 class="chapter-title">Stoic<br>Logic<span class="dot">.</span></h2>
+                    <div class="tag-chips">
+                        <span class="tag-chip">Rationality</span>
+                        <span class="tag-chip">C++ Architecture</span>
+                    </div>
+                    <div class="pull-quote">"Focus only on what can be controlled."</div>
+                    <p class="magazine-text">Grounding every action—from debugging complex architectures to interpreting life's chaos—in the rigid principles of Stoicism. The mind is a compiler. It reads the raw inputs of reality, strips away the noise of emotion, and executes only the necessary logic.</p>
                 </div>
             </div>
 
-            <div class="fragment frag-left parallax" data-speed="6">
-                <div class="ed-img img-square scroll-animate hover-target tilt-target" style="--delay: 0.2s">
-                    <img src="gym.jpg" alt="Iron">
+            <!-- CHAP 2: GRID B (Trái Text, Phải Ảnh) -->
+            <div class="chapter grid-b scroll-animate" style="--delay: 0.2s">
+                <div class="outline-num">02</div>
+                <div>
+                    <h2 class="chapter-title">Dark<br>Minimal<span class="dot">.</span></h2>
+                    <div class="tag-chips">
+                        <span class="tag-chip">Earth Tones</span>
+                        <span class="tag-chip">Unbranded</span>
+                    </div>
+                    <div class="pull-quote">"Silence in colors. Loud in structure."</div>
+                    <p class="magazine-text">A preference for oversized silhouettes, earth tones, and unbranded functional pieces. Fashion is not a display, but a sharp, consistent visual language in everyday wear.</p>
                 </div>
-                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.3s">
-                    <h2>Iron & Ritual<span class="dot">.</span></h2>
-                    <p>Physical health dictates mental acuity. A rigid structure of cutting phases, protein tracking, and relentless consistency in the weight room.</p>
+                <div class="img-wrapper parallax" data-speed="-10">
+                    <img src="wear.jpg" class="mag-img" alt="Dark Minimal">
                 </div>
             </div>
 
-            <div class="fragment frag-right parallax" data-speed="-5">
-                <div class="ed-img img-wide scroll-animate hover-target tilt-target" style="--delay: 0.2s">
-                    <img src="bmw.avif" alt="City Motion">
+            <!-- CHAP 3: GRID C (Ảnh Nhỏ - Stat - Text) -->
+            <div class="chapter grid-c scroll-animate" style="--delay: 0.2s">
+                <div class="outline-num">03</div>
+                <div class="img-wrapper parallax" data-speed="15">
+                    <img src="gym.jpg" class="mag-img" alt="Iron">
                 </div>
-                <div class="ed-text premium-glass scroll-animate hover-target tilt-target" style="--delay: 0.3s">
-                    <h2>Details & Motion<span class="dot">.</span></h2>
-                    <p>Whether navigating the pulse of the city after hours, or appreciating the intricate mechanics of a custom timepiece—true sophistication always lies in the unseen details.</p>
+                <div class="stat-callout glass-panel parallax" data-speed="-5">
+                    <span class="huge-num">100<span style="font-size:2rem">%</span></span>
+                    <span class="stat-label">Relentless Consistency</span>
+                </div>
+                <div>
+                    <h2 class="chapter-title">Iron & Ritual<span class="dot">.</span></h2>
+                    <p class="magazine-text">Physical health dictates mental acuity. A rigid structure of cutting phases, protein tracking, and consistency in the weight room is non-negotiable. The iron never lies; it is the truest metric of discipline.</p>
+                </div>
+            </div>
+
+            <!-- CHAP 4: GRID D (Stripe trên, Text giữa, Ảnh rộng dưới) -->
+            <div class="chapter grid-d scroll-animate" style="--delay: 0.2s">
+                <div class="outline-num">04</div>
+                <div class="accent-stripe parallax" data-speed="5">DETAILS & MOTION — DETAILS & MOTION —</div>
+                <h2 class="chapter-title" style="margin-top:-30px;">Details & Motion<span class="dot">.</span></h2>
+                <div class="tag-chips">
+                    <span class="tag-chip">Urban Cruising</span>
+                    <span class="tag-chip">Horology</span>
+                </div>
+                <p class="magazine-text">Whether navigating the pulse of the city after hours on a custom ride, or appreciating the intricate mechanics of a modified timepiece—true sophistication always lies in the unseen details.</p>
+                
+                <div class="img-wrapper parallax" data-speed="-8">
+                    <img src="bmw.avif" class="mag-img" alt="City Motion">
                 </div>
             </div>
 
@@ -230,7 +215,6 @@
     </div>
 
     <script>
-        // 1. Scroll Animation Observer (Hiển thị mượt)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -241,41 +225,17 @@
         
         document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-        // 2. HIỆU ỨNG TILT 3D VI MÔ (Đã tối ưu mượt cho PC)
-        const tiltElements = document.querySelectorAll('.tilt-target');
+        // THUẬT TOÁN PARALLAX AN TOÀN
         if (window.innerWidth > 900) {
-            tiltElements.forEach(el => {
-                el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const xc = rect.width / 2;
-                    const yc = rect.height / 2;
-                    
-                    const angleX = (yc - y) / yc * 8; 
-                    const angleY = (x - xc) / xc * 8;
-                    
-                    el.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-4px)`;
-                });
-                
-                el.addEventListener('mouseleave', () => {
-                    el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0deg)`;
-                });
-            });
-
-            // 3. THUẬT TOÁN PARALLAX SỬA ĐỔI: Tính toán theo tỷ lệ viewport để CHỐNG TRÀN BLOCK
             const viewportHeight = window.innerHeight;
-            
             window.addEventListener('scroll', () => {
                 document.querySelectorAll('.parallax').forEach(el => {
                     const speed = parseFloat(el.getAttribute('data-speed')) || 0;
                     const rect = el.getBoundingClientRect();
                     
-                    // Chỉ tính toán dịch chuyển khi block bắt đầu xuất hiện trong vùng nhìn thấy
                     if (rect.top < viewportHeight && rect.bottom > 0) {
                         const elementCenter = rect.top + rect.height / 2;
                         const viewportCenter = viewportHeight / 2;
-                        // Tính khoảng cách tương đối của vật thể so với trung tâm màn hình
                         const distanceFromCenter = elementCenter - viewportCenter;
                         
                         el.style.transform = `translate3d(0, ${distanceFromCenter * (speed / 100)}px, 0)`;
@@ -284,7 +244,7 @@
             }, { passive: true });
         }
 
-        // 4. ĐỔI MÀU CHỦ ĐỀ ĐỘNG KHI CLICK SWATCH
+        // ĐỔI MÀU CHỦ ĐỀ ĐỘNG CHUẨN XÁC
         const swatches = document.querySelectorAll('.swatch-container');
         swatches.forEach(swatch => {
             swatch.addEventListener('click', () => {
