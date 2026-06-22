@@ -11,6 +11,9 @@
 </head>
 <body>
 
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
     <div class="page-transition">
         
         <div class="shape shape-1"></div>
@@ -45,7 +48,7 @@
                 </p>
                 
                 <div class="personal-info-card glass-panel scroll-animate" style="--delay: 0.3s">
-                    <div class="glass-glow"></div> <ul>
+                    <ul>
                         <li><i class="fa-solid fa-user"></i> <strong>Gender:</strong> Male</li>
                         <li><i class="fa-solid fa-calendar"></i> <strong>Date of Birth:</strong> September 22, 2007</li>
                         <li><i class="fa-solid fa-graduation-cap"></i> <strong>Education:</strong> K26 HCMUS - University of Science</li>
@@ -101,9 +104,8 @@
             <h2 class="section-title scroll-animate" style="--delay: 0.05s">Key Milestones</h2>
             <div class="achievements-grid">
                 <div class="achievement-card ach-large glass-panel scroll-animate" style="--delay: 0.1s">
-                    <div class="glass-glow"></div>
+                    <div class="ach-icon"><i class="fa-solid fa-language"></i></div>
                     <div>
-                        <div class="ach-icon"><i class="fa-solid fa-language"></i></div>
                         <h3>IELTS 7.5 & HSK 3</h3>
                         <p>Advanced Linguistic Capabilities</p>
                         <span style="color: #71717a; font-size: 0.95rem;">Pursuing IELTS 8.0 & HSK 4</span>
@@ -111,21 +113,15 @@
                 </div>
                 
                 <div class="achievement-card ach-small glass-panel scroll-animate" style="--delay: 0.15s">
-                    <div class="glass-glow"></div>
-                    <div>
-                        <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
-                        <h3>ICPC National</h3>
-                        <p style="color: #a1a1aa; font-size: 0.9rem;">National Level Contestant</p>
-                    </div>
+                    <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <h3>ICPC National</h3>
+                    <p style="color: #a1a1aa; font-size: 0.9rem;">National Level Contestant</p>
                 </div>
                 
                 <div class="achievement-card ach-small glass-panel scroll-animate" style="--delay: 0.2s">
-                    <div class="glass-glow"></div>
-                    <div>
-                        <div class="ach-icon"><i class="fa-solid fa-code"></i></div>
-                        <h3>C/C++ Mastery</h3>
-                        <p style="color: #a1a1aa; font-size: 0.9rem;">Algorithmic Optimization</p>
-                    </div>
+                    <div class="ach-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3>C/C++ Mastery</h3>
+                    <p style="color: #a1a1aa; font-size: 0.9rem;">Algorithmic Optimization</p>
                 </div>
             </div>
         </section>
@@ -150,13 +146,8 @@
         </footer>
     </div>
 
-    <a href="#about" class="back-to-top" id="backToTop">
-        <i class="fa-solid fa-arrow-up"></i>
-        <svg><circle cx="23" cy="23" r="22"></circle></svg>
-    </a>
-
     <script>
-        // HÀM GỌI API ĐẾM VIEW PHÂN TÍCH CHUYÊN SÂU
+        // HÀM XỬ LÝ GỌI API ĐẾM LƯỢT XEM VÀ PHÂN TÍCH CHUYÊN SÂU
         async function updateVisitorCounter() {
             try {
                 const hasVisited = sessionStorage.getItem('has_visited_hunglam_site');
@@ -180,22 +171,24 @@
         }
         document.addEventListener('DOMContentLoaded', updateVisitorCounter);
 
-        // HIỆU ỨNG HIỂN THỊ KHI CUỘN
+        // HIỆU ỨNG HIỂN THỊ KHI CUỘN TRANG (SCROLL ANIMATION)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
-                if (entry.isIntersecting) { entry.target.classList.add('show'); }
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }); 
         document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-        // HIỆU ỨNG NAVBAR BLUR
+        // HIỆU ỨNG BLUR NAVBAR KHI CUỘN SỐNG TRANG
         const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 40) { navbar.classList.add('scrolled'); } 
             else { navbar.classList.remove('scrolled'); }
         }, { passive: true });
 
-        // NAVBAR INDICATOR
+        // NAVBAR INDICATOR HOVER TRACKING
         if (window.innerWidth > 900) {
             const navLinks = document.querySelectorAll('.nav-links li');
             const indicator = document.querySelector('.nav-indicator');
@@ -217,41 +210,50 @@
             });
         }
 
-        // --- LẬP TRÌNH Ý TƯỞNG 3 & 4 (GIÁM SÁT CHUỘT VÀ ĐO TIẾN TRÌNH CUỘN TRANG) ---
-        const backToTopBtn = document.getElementById('backToTop');
-        const progressCircle = document.querySelector('.back-to-top circle');
-        const totalCircumference = 138; // Chu vi vòng tròn SVG (2 * pi * r)
+        // ĐIỀU KHIỂN CON TRỎ CHUỘT NAM CHÂM TRÊN ĐỂ BÀN (DESKTOP)
+        if (window.innerWidth > 900) {
+            const cursor = document.querySelector('.custom-cursor');
+            const follower = document.querySelector('.custom-cursor-follower');
+            const magneticElements = document.querySelectorAll('.social-btn, .btn-secondary, .btn-primary, .nav-links a');
 
-        window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            // Ý tưởng 4: Hiển thị nút và vẽ vòng tiến trình
-            if (winScroll > 300) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
+            let mouseX = 0, mouseY = 0;
+            let isMagnetic = false;
 
-            const scrollPercentage = winScroll / totalHeight;
-            const drawOffset = totalCircumference - (scrollPercentage * totalCircumference);
-            progressCircle.style.strokeDashoffset = drawOffset;
-        }, { passive: true });
-
-        // Ý tưởng 3: Thuật toán quét tọa độ và đẩy vệt sáng trên thẻ kính
-        document.querySelectorAll('.glass-panel').forEach(panel => {
-            const glow = panel.querySelector('.glass-glow');
-            if(!glow) return;
-
-            panel.addEventListener('mousemove', (e) => {
-                const rect = panel.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                glow.style.left = x + 'px';
-                glow.style.top = y + 'px';
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+                if (!isMagnetic) {
+                    follower.style.left = mouseX + 'px'; follower.style.top = mouseY + 'px';
+                }
             });
-        });
+
+            magneticElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hovered'); follower.classList.add('hovered');
+                    if(el.classList.contains('glass-panel') || el.classList.contains('social-btn') || el.classList.contains('btn-primary')) {
+                        isMagnetic = true; follower.classList.add('magnetic');
+                        const rect = el.getBoundingClientRect();
+                        follower.style.left = (rect.left + rect.width / 2) + 'px';
+                        follower.style.top = (rect.top + rect.height / 2) + 'px';
+                        follower.style.width = rect.width + 'px'; follower.style.height = rect.height + 'px';
+                    }
+                });
+                el.addEventListener('mousemove', (e) => {
+                    if (isMagnetic) {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - (rect.left + rect.width / 2);
+                        const y = e.clientY - (rect.top + rect.height / 2);
+                        el.style.transform = `translate3d(${x * 0.2}px, ${y * 0.2}px, 0) scale(1.02)`;
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hovered'); follower.classList.remove('hovered');
+                    isMagnetic = false; follower.classList.remove('magnetic');
+                    follower.style.width = '40px'; follower.style.height = '40px';
+                    el.style.transform = '';
+                });
+            });
+        }
     </script>
 </body>
 </html>

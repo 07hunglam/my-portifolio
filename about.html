@@ -108,6 +108,8 @@
     </style>
 </head>
 <body>
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
 
     <div class="progress-container">
         <div class="progress-bar" id="readingProgress"></div>
@@ -183,11 +185,8 @@
                     <img src="gym.jpg" class="mag-img" alt="Iron">
                 </div>
                 <div class="stat-callout glass-panel parallax" data-speed="-5">
-                    <div class="glass-glow"></div>
-                    <div>
-                        <span class="huge-num">100<span style="font-size:2rem">%</span></span>
-                        <span class="stat-label">Relentless Consistency</span>
-                    </div>
+                    <span class="huge-num">100<span style="font-size:2rem">%</span></span>
+                    <span class="stat-label">Relentless Consistency</span>
                 </div>
                 <div>
                     <h2 class="chapter-title">Iron & Ritual<span class="dot">.</span></h2>
@@ -257,27 +256,56 @@
             });
         });
 
-        // THUẬT TOÁN ĐO TIẾN TRÌNH CUỘN TRANG MAGAZINE
+        // THUẬT TOÁN TÍNH TOÁN % TIẾN TRÌNH CUỘN TRANG MAGAZINE (Ý TƯỞNG 4)
         window.addEventListener('scroll', () => {
             const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById('readingProgress').style.width = scrolled + '%';
         }, { passive: true });
+        // ĐIỀU KHIỂN CON TRỎ CHUỘT NAM CHÂM TRÊN TRANG ABOUT
+        if (window.innerWidth > 900) {
+            const cursor = document.querySelector('.custom-cursor');
+            const follower = document.querySelector('.custom-cursor-follower');
+            // Thêm các mục tiêu hút nam châm trên trang About (nút Back Home, các vòng tròn đổi màu)
+            const magneticElements = document.querySelectorAll('.back-nav a, .swatch-container');
 
-        // Ý tưởng 3: Áp dụng vệt sáng quét qua cho card kính trên trang About
-        document.querySelectorAll('.glass-panel').forEach(panel => {
-            const glow = panel.querySelector('.glass-glow');
-            if(!glow) return;
+            let mouseX = 0, mouseY = 0;
+            let isMagnetic = false;
 
-            panel.addEventListener('mousemove', (e) => {
-                const rect = panel.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                glow.style.left = x + 'px';
-                glow.style.top = y + 'px';
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+                if (!isMagnetic) {
+                    follower.style.left = mouseX + 'px'; follower.style.top = mouseY + 'px';
+                }
             });
-        });
+
+            magneticElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hovered'); follower.classList.add('hovered');
+                    isMagnetic = true; follower.classList.add('magnetic');
+                    const rect = el.getBoundingClientRect();
+                    follower.style.left = (rect.left + rect.width / 2) + 'px';
+                    follower.style.top = (rect.top + rect.height / 2) + 'px';
+                    follower.style.width = rect.width + 'px'; follower.style.height = rect.height + 'px';
+                });
+                el.addEventListener('mousemove', (e) => {
+                    if (isMagnetic) {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - (rect.left + rect.width / 2);
+                        const y = e.clientY - (rect.top + rect.height / 2);
+                        el.style.transform = `translate3d(${x * 0.2}px, ${y * 0.2}px, 0) scale(1.02)`;
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hovered'); follower.classList.remove('hovered');
+                    isMagnetic = false; follower.classList.remove('magnetic');
+                    follower.style.width = '40px'; follower.style.height = '40px';
+                    el.style.transform = '';
+                });
+            });
+        }
     </script>
 </body>
 </html>
