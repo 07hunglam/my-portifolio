@@ -213,24 +213,3 @@ body {
         0 0 40px rgba(var(--accent-rgb, 56, 189, 248), 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }
-:root {
-    /* Khởi tạo biến màu mặc định (màu xanh cyan ban đầu) */
-    --accent-color: #38bdf8;
-    --accent-rgb: 56, 189, 248;
-}
-
-/* Ép tất cả các thành phần liên quan đến màu nhấn nhận biến động này */
-body {
-    background-image: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.08) 0%, rgba(2,3,5,1) 70%) !important;
-}
-
-::-webkit-scrollbar-thumb { background: var(--accent-color) !important; }
-.greeting { color: var(--accent-color) !important; }
-.tagline .accent-dot { color: var(--accent-color) !important; }
-.personal-info-card i { color: var(--accent-color) !important; }
-.personal-info-card li strong { color: var(--accent-color) !important; }
-.timeline-item::before { background: var(--accent-color) !important; box-shadow: 0 0 12px var(--accent-color) !important; }
-.timeline-item:hover h3 { color: var(--accent-color) !important; }
-.ach-large p { color: var(--accent-color) !important; }
-.social-btn:hover { color: var(--accent-color) !important; border-color: var(--accent-color) !important; }
-.footer-analytics i { color: var(--accent-color) !important; }
