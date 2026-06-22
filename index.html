@@ -150,15 +150,17 @@
     </div>
 
     <script>
-        // HÀM XỬ LÝ GỌI API ĐẾM LƯỢT XEM VÀ PHÂN TÍCH CHUYÊN SÂU
+        // ĐOẠN CODE SỬA CHUẨN ĐỂ VERCELL REWRITE KHÔNG BỊ LỖI ROUTING
         async function updateVisitorCounter() {
             try {
                 const hasVisited = sessionStorage.getItem('has_visited_hunglam_site');
                 let response;
                 if (hasVisited) {
-                    response = await fetch('/api/counter?metric=visitor_count', { method: 'GET' });
+                    // Xóa bỏ đoạn ?metric=visitor_count dư thừa
+                    response = await fetch('/api/counter', { method: 'GET' });
                 } else {
-                    response = await fetch('/api/counter?metric=visitor_count', { method: 'POST' });
+                    // Xóa bỏ đoạn ?metric=visitor_count dư thừa
+                    response = await fetch('/api/counter', { method: 'POST' });
                     sessionStorage.setItem('has_visited_hunglam_site', 'true');
                 }
                 const data = await response.json();
