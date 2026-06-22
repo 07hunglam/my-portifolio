@@ -39,9 +39,11 @@
                 <p class="greeting scroll-animate" style="--delay: 0.15s">INTRODUCTION</p>
                 <h1 class="scroll-animate" style="--delay: 0.2s">Hello, I'm Hung Lam</h1>
                 <p class="tagline scroll-animate" style="--delay: 0.25s">
-                    <span style="letter-spacing: 2px;">IT STUDENT</span> 
-                    <span class="accent-dot">•</span> SOFTWARE DEVELOPER 
-                    <span class="accent-dot">•</span> STOIC EXPLORER
+                    <span class="scramble-text" data-value="IT STUDENT">IT STUDENT</span> 
+                    <span class="accent-dot">•</span> 
+                    <span class="scramble-text" data-value="SOFTWARE DEVELOPER">SOFTWARE DEVELOPER</span> 
+                    <span class="accent-dot">•</span> 
+                    <span class="scramble-text" data-value="STOIC EXPLORER">STOIC EXPLORER</span>
                 </p>
                 
                 <div class="personal-info-card glass-panel scroll-animate" style="--delay: 0.3s">
@@ -223,6 +225,73 @@
                 indicator.style.cssText = `opacity: 0; transform: scale(0.8);`;
             });
         }
+        // ====================================================
+        // THUẬT TOÁN 1: TEXT SCRAMBLE (HIỆU ỨNG CHỮ MA TRẬN)
+        // ====================================================
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ🔑🌐💻🚀🔥";
+    
+        function triggerTextScramble(element) {
+            let iteration = 0;
+            const originalText = element.dataset.value;
+            clearInterval(element.interval);
+            
+            element.interval = setInterval(() => {
+                element.innerText = originalText
+                    .split("")
+                    .map((letter, index) => {
+                        if(index < iteration) {
+                            return originalText[index];
+                        }
+                        return letters[Math.floor(Math.random() * letters.length)];
+                    })
+                    .join("");
+            
+                if(iteration >= originalText.length){ 
+                    clearInterval(element.interval);
+                }
+                iteration += 1 / 3; // Tốc độ giải mã chữ
+            }, 30);
+        }
+
+        // Tự động chạy hiệu ứng Scramble khi trang web tải xong
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.scramble-text').forEach(el => {
+                setTimeout(() => triggerTextScramble(el), 400);
+            });
+        });
+
+        // ====================================================
+        // THUẬT TOÁN 2: TỰ ĐỘNG ĐỔI ACCENT COLOR THEO THỜI GIAN
+        // ====================================================
+        // Danh sách các palette màu công nghệ cao cấp (HEX và RGB tương ứng)
+        const colorPalette = [
+            { hex: "#38bdf8", rgb: "56, 189, 248" },   // Xanh Cyan gốc
+            { hex: "#a855f7", rgb: "168, 85, 247" },  // Tím Cyberpunk
+            { hex: "#f43f5e", rgb: "244, 63, 94" },   // Đỏ Hồng Neon
+            { hex: "#10b981", rgb: "16, 185, 129" },  // Xanh Emerald Tech
+            { hex: "#f59e0b", rgb: "245, 158, 11" }   // Vàng Hổ Phách Stoic
+        ];
+    
+        let currentColorIndex = 0;
+    
+        function autoChangeAccentColor() {
+            currentColorIndex = (currentColorIndex + 1) % colorPalette.length;
+            const nextColor = colorPalette[currentColorIndex];
+        
+            // Đẩy màu mới vào biến CSS toàn cục với hiệu ứng transition mượt mà
+            document.documentElement.style.setProperty('--accent-color', nextColor.hex);
+            document.documentElement.style.setProperty('--accent-rgb', nextColor.rgb);
+        }
+    
+        // Tự động đổi màu chu kỳ mỗi 7 giây (7000ms)
+        setInterval(autoChangeAccentColor, 7000);
+
+
+
+
+
+
+
     </script>
 </body>
 </html>
