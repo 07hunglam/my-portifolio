@@ -260,14 +260,45 @@
         // XỬ LÝ ẨN/HIỆN NÚT CUỘN LÊN ĐẦU TRANG KHI CUỘN QUA VÙNG HERO
         const backToTopBtn = document.getElementById('backToTop');
 
+        // ====================================================
+        // THUẬT TOÁN LERP ĐIỀU KHIỂN NÚT TRƯỢT THEO CUỘN TRANG
+        // ====================================================
+        const btt = document.getElementById('backToTop');
+        
+        let currentY = window.scrollY + (window.innerHeight / 2);
+        let targetY = currentY;
+        const ease = 0.1; // Độ mượt vật lý (Số càng nhỏ nút di chuyển càng trễ và mượt)
+
+        // 1. Giám sát liên tục vị trí cuộn để tính toán tọa độ đích (Giữa màn hình)
         window.addEventListener('scroll', () => {
-            // Khi cuộn xuống quá 400px thì nút xuất hiện, ngược lại thì ẩn đi
-            if (window.scrollY > 400) {
-                backToTopBtn.classList.add('visible');
+            const winScroll = window.scrollY;
+            
+            // Ẩn/Hiện nút khi cuộn qua vùng Hero
+            if (winScroll > 400) {
+                btt.classList.add('visible');
             } else {
-                backToTopBtn.classList.remove('visible');
+                btt.classList.remove('visible');
             }
+
+            // Tọa độ đích luôn nằm chính giữa màn hình (Middle) khi cuộn
+            targetY = winScroll + (window.innerHeight / 2) - 23; // trừ 23px bằng nửa chiều cao nút để tâm nằm giữa
         }, { passive: true });
+
+        // 2. Vòng lặp liên tục (Animation Loop) tạo hiệu ứng trượt đuổi mượt mà
+        function updateFloatingPosition() {
+            // Công thức nội suy tuyến tính (Lerp) tạo độ trễ vật lý cao cấp
+            currentY += (targetY - currentY) * ease;
+            
+            if (btt) {
+                btt.style.top = currentY + 'px';
+            }
+            
+            // Chạy liên tục theo tần số quét của màn hình (60Hz / 120Hz)
+            requestAnimationFrame(updateFloatingPosition);
+        }
+        
+        // Kích hoạt vòng lặp chuyển động
+        requestAnimationFrame(updateFloatingPosition);
     </script>
     
 </body>
