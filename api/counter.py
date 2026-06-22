@@ -1,5 +1,8 @@
 import os
 import psycopg2
+import json
+import urllib.parse
+import urllib.request
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -7,33 +10,82 @@ app = Flask(__name__)
 def get_db_connection():
     return psycopg2.connect(os.environ.get('DATABASE_URL'))
 
-# Cấu hình endpoint chấp nhận cả phương thức GET (Chỉ đọc) và POST (Tăng số)
+# Hàm gửi báo cáo ngầm qua Telegram Bot API
+def send_telegram_report(current_views, environment):
+    # Chỉ nhắn tin khi số view đạt các mốc chẵn chia hết cho 10 để tránh spam
+    if current_views % 10 != 0:
+        return
+        
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    
+    # Nếu chưa cấu hình đủ biến môi trường trên Vercel thì bỏ qua
+    if not bot_token or not chat_id:
+        return
+
+    # Soạn nội dung tin nhắn Markdown
+    message_text = (
+        f"📊 *[PORTFOLIO ANALYTICS]*\n\n"
+        f"🚀 *Cột mốc mới:* {current_views} lượt xem!\n"
+        f"🌐 *Môi trường:* `{environment}`\n\n"
+        f"🔥 _Keep moving forward, Lam!_"
+    )
+    
+    # Đường dẫn API gửi tin nhắn của Telegram
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    
+    # Tạo payload dữ liệu dạng JSON
+    payload = {
+        "chat_id": chat_id,
+        "text": message_text,
+        "parse_mode": "Markdown"  # Kích hoạt định dạng chữ đậm/nghiêng
+    }
+    
+    try:
+        data = json.dumps(payload).encode('utf-8')
+        req = urllib.request.Request(
+            url, 
+            data=data, 
+            headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'}
+        )
+        with urllib.request.urlopen(req) as response:
+            response.read() # Đọc phản hồi ngầm
+    except Exception as e:
+        print(f"Failed to send Telegram notification: {str(e)}")
+
 @app.route('/api/counter', methods=['GET', 'POST'])
-def handle_counter():
+def handle_analytics():
+    # Tự động cách ly môi trường (Ý tưởng 3)
+    is_production = os.environ.get('VERCEL_ENV') == 'production'
+    environment_name = "Production" if is_production else "Local-Dev"
+    
+    metric = 'visitor_count' if is_production else 'dev_visitor_count'
+
     conn = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         
         if request.method == 'POST':
-            # NẾU LÀ POST: Thực hiện tăng biến đếm nguyên tử
             cursor.execute("""
                 INSERT INTO site_analytics (metric_name, value) 
-                VALUES ('visitor_count', 1)
+                VALUES (%s, 1)
                 ON CONFLICT (metric_name) 
                 DO UPDATE SET value = site_analytics.value + 1
                 RETURNING value;
-            """)
+            """, (metric,))
             new_count = cursor.fetchone()[0]
             conn.commit()
+            
+            # Kích hoạt gửi báo cáo sang Telegram (Ý tưởng 1)
+            send_telegram_report(new_count, environment_name)
         else:
-            # NẾU LÀ GET: Chỉ thực hiện truy vấn SELECT lấy số lượng hiện tại, không thay đổi dữ liệu
-            cursor.execute("SELECT value FROM site_analytics WHERE metric_name = 'visitor_count';")
+            cursor.execute("SELECT value FROM site_analytics WHERE metric_name = %s;", (metric,))
             result = cursor.fetchone()
             new_count = result[0] if result else 0
             
         cursor.close()
-        return jsonify({"success": True, "visitor_count": new_count}), 200
+        return jsonify({"success": True, "environment": environment_name, "value": new_count}), 200
 
     except Exception as e:
         if conn: conn.rollback()
