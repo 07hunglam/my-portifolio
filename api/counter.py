@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import requests
+import threading
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -8,14 +9,13 @@ app = Flask(__name__)
 def get_db_connection():
     return psycopg2.connect(os.environ.get('DATABASE_URL'))
 
-# Hàm phân tích chuỗi User-Agent để nhận diện thiết bị/HĐH nhanh
+# Hàm phân tích chuỗi User-Agent để nhận diện thiết bị/HĐH
 def parse_user_agent(ua_string):
     if not ua_string:
         return "Thiết bị ẩn danh", "Trình duyệt ẩn danh"
     
     ua_lower = ua_string.lower()
     
-    # Nhận diện Hệ điều hành / Thiết bị
     if "android" in ua_lower:
         os_name = "📱 Android"
     elif "iphone" in ua_lower or "ipad" in ua_lower:
@@ -29,7 +29,6 @@ def parse_user_agent(ua_string):
     else:
         os_name = "❓ Thiết bị khác"
         
-    # Nhận diện Trình duyệt
     if "chrome" in ua_lower and "safari" in ua_lower and "edge" not in ua_lower:
         browser = "Chrome"
     elif "safari" in ua_lower and "chrome" not in ua_lower:
@@ -43,14 +42,12 @@ def parse_user_agent(ua_string):
         
     return os_name, browser
 
-# Hàm lấy vị trí địa lý từ IP của khách truy cập
+# Hàm lấy vị trí địa lý từ IP
 def get_location_from_ip(ip_address):
-    # Tránh tra cứu các IP chạy local (localhost)
     if not ip_address or ip_address in ["127.0.0.1", "::1"]:
         return "📍 Môi trường Local-Dev"
         
     try:
-        # Sử dụng API miễn phí ip-api.com để lấy thông tin IP nhanh
         response = requests.get(f"http://ip-api.com/json/{ip_address}?fields=status,country,regionName,city", timeout=3)
         if response.status_code == 200:
             data = response.json()
@@ -60,20 +57,17 @@ def get_location_from_ip(ip_address):
                 return f"📍 {city}, {country}"
     except Exception:
         pass
-    return "📍 Không rõ vị trí (Bị chặn/Ẩn danh)"
+    return "📍 Không rõ vị trí"
 
-def send_telegram_report(current_views, environment, ip_address, ua_string, referer):
+# NHIỆM VỤ NGẦM BẤT ĐỒNG BỘ: Chạy trên một Thread riêng biệt, độc lập với Flask phản hồi
+def async_analytics_pipeline(current_views, environment, ip_address, ua_string, referer, metric_name):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
     
-    if not bot_token or not chat_id:
-        return
-
-    # 1. Thu thập dữ liệu phân tích chuyên sâu
+    # 1. Thực hiện các tác vụ tốn thời gian (Phân tích, Gọi API định vị ngoại mạng)
     os_info, browser_info = parse_user_agent(ua_string)
     location_info = get_location_from_ip(ip_address)
     
-    # 2. Xử lý nguồn truy cập (Referer)
     if not referer:
         source_info = "🔗 Truy cập trực tiếp (Direct)"
     elif "facebook.com" in referer or "m.facebook.com" in referer:
@@ -85,15 +79,35 @@ def send_telegram_report(current_views, environment, ip_address, ua_string, refe
     else:
         source_info = f"🌐 Nguồn khác: `{referer.split('/')[2]}`"
 
-    # 3. Thiết kế giao diện báo cáo chuyên nghiệp
-    message_text = f"""📊 *[PORTFOLIO ADVANCED ANALYTICS]*
+    # 2. GHI LOG VÀO DATABASE (Ý tưởng 2)
+    conn = None
+    try:
+        # Mở một kết nối database riêng cho luồng ngầm này
+        conn = psycopg2.connect(os.environ.get('DATABASE_URL'))
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO visitor_logs (metric_name, views_milestone, ip_address, location, os, browser, referer)
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
+        """, (metric_name, current_views, ip_address, location_info, os_info, browser_info, referer))
+        conn.commit()
+        cursor.close()
+    except Exception as db_err:
+        print(f"Failed to save analytics log to database: {str(db_err)}")
+    finally:
+        if conn: conn.close()
+
+    # 3. BẮN TIN NHẮN VỀ TELEGRAM BOT
+    if not bot_token or not chat_id:
+        return
+
+    message_text = f"""========= 📊 *ANALYTICS REPORT* =========
 
 🚀 *Cột mốc mới:* {current_views} lượt xem!
 🌐 *Môi trường:* `{environment}`
 
-🕵️ *THÔNG TIN KHÁCH TRUY CẬP:*
+🕵️ *THÔNG TIN CHI TIẾT (ĐÃ LƯU DB):*
 • {location_info}
-• Hệ điều hành: `{os_info}`
+• Thiết bị: `{os_info}`
 • Trình duyệt: `{browser_info}`
 • {source_info}
 
@@ -109,7 +123,7 @@ def send_telegram_report(current_views, environment, ip_address, ua_string, refe
     try:
         requests.post(url, json=payload, timeout=5)
     except Exception as e:
-        print(f"Failed to send Advanced Telegram notification: {str(e)}")
+        print(f"Failed to send Telegram notification: {str(e)}")
 
 @app.route('/api/counter', methods=['GET', 'POST'])
 def handle_analytics():
@@ -132,25 +146,32 @@ def handle_analytics():
             """, (metric,))
             new_count = cursor.fetchone()[0]
             conn.commit()
+            cursor.close()
             
-            # Lấy các thông tin phân tích hệ thống từ Request Header
-            # Vercel tự động chuyển tiếp IP thật của khách qua Header 'x-forwarded-for'
+            # Trích xuất nhanh dữ liệu thô từ request header của client
             ip_address = request.headers.get('x-forwarded-for', request.remote_addr)
             if ip_address and ',' in ip_address:
-                ip_address = ip_address.split(',')[0].strip() # Lấy IP gốc đầu tiên nếu qua nhiều proxy
+                ip_address = ip_address.split(',')[0].strip()
                 
             ua_string = request.headers.get('User-Agent', '')
             referer = request.headers.get('Referer', '')
             
-            # Kích hoạt gửi báo cáo phân tích chuyên sâu
-            send_telegram_report(new_count, environment_name, ip_address, ua_string, referer)
+            # KÍCH HOẠT LUỒNG NGẦM BẤT ĐỒNG BỘ (Ý tưởng 1):
+            # Khởi tạo một Thread riêng để làm nhiệm vụ phân tích và gọi API mạng.
+            # Tiến trình chính Flask lập tức đi tiếp xuống lệnh return mà không bị nghẽn lại đợi.
+            threading.Thread(
+                target=async_analytics_pipeline,
+                args=(new_count, environment_name, ip_address, ua_string, referer, metric)
+            ).start()
+            
+            # Trả kết quả tức thì về cho Frontend (Tốc độ phản hồi < 10ms)
+            return jsonify({"success": True, "environment": environment_name, "value": new_count}), 200
         else:
             cursor.execute("SELECT value FROM site_analytics WHERE metric_name = %s;", (metric,))
             result = cursor.fetchone()
             new_count = result[0] if result else 0
-            
-        cursor.close()
-        return jsonify({"success": True, "environment": environment_name, "value": new_count}), 200
+            cursor.close()
+            return jsonify({"success": True, "environment": environment_name, "value": new_count}), 200
 
     except Exception as e:
         if conn: conn.rollback()
