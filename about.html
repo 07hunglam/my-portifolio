@@ -21,12 +21,20 @@
             transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, border-color 0.4s ease, -webkit-text-stroke 0.4s ease;
         }
 
+        /* --- MAGAZINE READING PROGRESS BAR --- */
+        .progress-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: transparent; z-index: 9999;
+        }
+        .progress-bar {
+            height: 100%; background: var(--accent-color, #38bdf8); width: 0%;
+            box-shadow: 0 0 8px var(--accent-color, #38bdf8); transition: width 0.1s ease-out;
+        }
+
         /* --- MAGAZINE TYPOGRAPHY & LOOKBOOK STYLES --- */
         .editorial-board {
             position: relative; max-width: 1300px; margin: 150px auto 100px; padding: 0 5%; z-index: 10;
         }
 
-        /* Cover Type */
         .cover-header { margin-bottom: 18vh; position: relative; }
         .cover-header h1 { font-family: 'Playfair Display', serif; font-size: 8rem; font-weight: 700; line-height: 0.9; letter-spacing: -3px; color: #fff; text-transform: uppercase; }
         .cover-header h1 .italic-stroke {
@@ -36,24 +44,19 @@
         }
         .cover-header .issue-meta { font-size: 1rem; letter-spacing: 4px; color: #71717a; text-transform: uppercase; margin-top: 40px; display: flex; gap: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;}
 
-        /* Bảng màu tối giản */
         .mb-palette { display: flex; gap: 20px; max-width: 500px; margin: 0 0 15vh 0; }
         .swatch-container { cursor: pointer; transition: transform 0.2s ease; }
         .swatch-container:hover { transform: translateY(-4px); }
         .swatch { width: 50px; height: 50px; border-radius: 50%; box-shadow: 2px 5px 15px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); transition: border-color 0.3s; }
         .swatch-container.active .swatch { border-color: #ffffff; box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.5); }
 
-        /* Các khối Chapter (Typography + Image Grids) */
         .chapter { margin-bottom: 25vh; position: relative; display: grid; gap: 60px; align-items: center; }
-        
         .chapter-title { font-family: 'Playfair Display', serif; font-size: 4rem; color: #fff; line-height: 1.1; margin-bottom: 20px;}
         .chapter-title .dot { color: var(--accent-color); }
         
         .outline-num { position: absolute; font-family: 'Playfair Display', serif; font-size: 16rem; font-weight: 700; color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.05); z-index: -1; line-height: 0.8; user-select: none;}
-
         .magazine-text { font-size: 1.15rem; color: #a1a1aa; line-height: 1.9; font-weight: 300; }
         
-        /* UI Elements */
         .pull-quote { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent-color); font-style: italic; line-height: 1.3; border-left: 4px solid var(--accent-color); padding-left: 30px; margin: 30px 0;}
         .tag-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px; }
         .tag-chip { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
@@ -62,29 +65,24 @@
         .stat-callout .stat-label { color: var(--accent-color); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
         .accent-stripe { font-family: 'Playfair Display', serif; font-size: 6rem; color: transparent; -webkit-text-stroke: 1px var(--accent-color); white-space: nowrap; overflow: hidden; opacity: 0.3; margin-bottom: 20px; }
 
-        /* Hình ảnh Lookbook */
         .img-wrapper { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.6); will-change: transform; z-index: 2;}
         .mag-img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
         .img-wrapper:hover .mag-img { transform: scale(1.05); }
 
-        /* GRID A: Trái Ảnh, Phải Text */
         .grid-a { grid-template-columns: 1fr 1.2fr; }
         .grid-a .outline-num { top: -80px; left: -40px; }
         .grid-a .img-wrapper { height: 65vh; }
         
-        /* GRID B: Trái Text, Phải Ảnh */
         .grid-b { grid-template-columns: 1.2fr 1fr; text-align: right; }
         .grid-b .outline-num { top: -60px; right: -30px; }
         .grid-b .tag-chips { justify-content: flex-end; }
         .grid-b .pull-quote { border-left: none; border-right: 4px solid var(--accent-color); padding-left: 0; padding-right: 30px; }
         .grid-b .img-wrapper { height: 55vh; }
 
-        /* GRID C: Ảnh Nhỏ - Stat - Text */
         .grid-c { grid-template-columns: 0.8fr 0.8fr 1.4fr; }
         .grid-c .outline-num { top: -100px; left: 35%; }
         .grid-c .img-wrapper { height: 40vh; }
 
-        /* GRID D: Stripe ngang, Chữ trên, Ảnh lớn dưới */
         .grid-d { grid-template-columns: 1fr; text-align: center; gap: 30px;}
         .grid-d .outline-num { top: 60px; right: 5%; font-size: 20rem;}
         .grid-d .magazine-text { max-width: 700px; margin: 0 auto; }
@@ -100,7 +98,7 @@
             .cover-header h1 { font-size: 4rem; }
             .cover-header h1 .italic-stroke { margin-left: 0; }
             .chapter { grid-template-columns: 1fr !important; text-align: left !important; gap: 30px; margin-bottom: 15vh;}
-            .grid-b { display: flex; flex-direction: column-reverse; } /* Đảo ngược để chữ nằm dưới ảnh trên mobile */
+            .grid-b { display: flex; flex-direction: column-reverse; }
             .outline-num { font-size: 8rem !important; left: -10px !important; top: -30px !important; }
             .grid-b .tag-chips { justify-content: flex-start; }
             .grid-b .pull-quote { border-right: none; border-left: 4px solid var(--accent-color); padding-right: 0; padding-left: 30px; }
@@ -111,6 +109,10 @@
 </head>
 <body>
 
+    <div class="progress-container">
+        <div class="progress-bar" id="readingProgress"></div>
+    </div>
+
     <div class="page-transition">
         
         <div class="back-nav scroll-animate" style="--delay: 0.05s">
@@ -119,7 +121,6 @@
 
         <div class="editorial-board">
             
-            <!-- TẠP CHÍ COVER -->
             <div class="cover-header scroll-animate" style="--delay: 0.1s">
                 <h1>The Core<span class="italic-stroke">Identity.</span></h1>
                 <div class="issue-meta">
@@ -129,7 +130,6 @@
                 </div>
             </div>
 
-            <!-- BẢNG MÀU CHỦ ĐỀ ĐỘNG -->
             <div class="mb-palette scroll-animate" style="--delay: 0.15s">
                 <div class="swatch-container active" data-color="#38bdf8" data-rgb="56, 189, 248" data-bg="#020305" data-glass="rgba(20, 21, 26, 0.3)">
                     <div class="swatch" style="background: #38bdf8;"></div>
@@ -145,7 +145,6 @@
                 </div>
             </div>
 
-            <!-- CHAP 1: GRID A (Trái Ảnh, Phải Text) -->
             <div class="chapter grid-a scroll-animate" style="--delay: 0.2s">
                 <div class="outline-num">01</div>
                 <div class="img-wrapper parallax" data-speed="12">
@@ -162,7 +161,6 @@
                 </div>
             </div>
 
-            <!-- CHAP 2: GRID B (Trái Text, Phải Ảnh) -->
             <div class="chapter grid-b scroll-animate" style="--delay: 0.2s">
                 <div class="outline-num">02</div>
                 <div>
@@ -179,7 +177,6 @@
                 </div>
             </div>
 
-            <!-- CHAP 3: GRID C (Ảnh Nhỏ - Stat - Text) -->
             <div class="chapter grid-c scroll-animate" style="--delay: 0.2s">
                 <div class="outline-num">03</div>
                 <div class="img-wrapper parallax" data-speed="15">
@@ -195,7 +192,6 @@
                 </div>
             </div>
 
-            <!-- CHAP 4: GRID D (Stripe trên, Text giữa, Ảnh rộng dưới) -->
             <div class="chapter grid-d scroll-animate" style="--delay: 0.2s">
                 <div class="outline-num">04</div>
                 <div class="accent-stripe parallax" data-speed="5">DETAILS & MOTION — DETAILS & MOTION —</div>
@@ -212,40 +208,34 @@
             </div>
 
         </div>
-
     </div>
 
     <script>
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('show'); }
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }); 
-        
         document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-        // THUẬT TOÁN PARALLAX AN TOÀN
+        // PARALLAX SCRIPT
         if (window.innerWidth > 900) {
             const viewportHeight = window.innerHeight;
             window.addEventListener('scroll', () => {
                 document.querySelectorAll('.parallax').forEach(el => {
                     const speed = parseFloat(el.getAttribute('data-speed')) || 0;
                     const rect = el.getBoundingClientRect();
-                    
                     if (rect.top < viewportHeight && rect.bottom > 0) {
                         const elementCenter = rect.top + rect.height / 2;
                         const viewportCenter = viewportHeight / 2;
                         const distanceFromCenter = elementCenter - viewportCenter;
-                        
                         el.style.transform = `translate3d(0, ${distanceFromCenter * (speed / 100)}px, 0)`;
                     }
                 });
             }, { passive: true });
         }
 
-        // ĐỔI MÀU CHỦ ĐỀ ĐỘNG CHUẨN XÁC
+        // SWATCH THEME CHANGER
         const swatches = document.querySelectorAll('.swatch-container');
         swatches.forEach(swatch => {
             swatch.addEventListener('click', () => {
@@ -263,6 +253,14 @@
                 document.body.style.backgroundColor = bodyBG;
             });
         });
+
+        // THUẬT TOÁN TÍNH TOÁN % TIẾN TRÌNH CUỘN TRANG MAGAZINE (Ý TƯỞNG 4)
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        }, { passive: true });
     </script>
 </body>
 </html>

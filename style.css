@@ -29,7 +29,6 @@ body {
     background: rgba(20, 21, 26, 0.3);
     backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
     border-radius: 20px; position: relative; overflow: hidden;
-    /* Inset shadow 3 lớp tạo độ sâu thật sự */
     box-shadow: 
         0 20px 40px rgba(0, 0, 0, 0.5), 
         inset 0 1px 0 rgba(255, 255, 255, 0.08), 
@@ -37,14 +36,12 @@ body {
         inset 0 0 0 1px rgba(255, 255, 255, 0.01);
 }
 
-/* Specular highlight mỏng và tinh tế hơn */
 .glass-panel::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
     background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
     z-index: 10; pointer-events: none;
 }
 
-/* Shimmer sweep cực mượt */
 .glass-panel::after {
     content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
     background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
@@ -62,7 +59,6 @@ body {
     padding: 30px 60px; z-index: 1000; background: transparent; transition: padding 0.4s ease, background-color 0.4s ease;
 }
 
-/* Navbar nâng cấp Blur(28px) và Shadow */
 .navbar.scrolled {
     background: rgba(2, 3, 5, 0.6); 
     backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -105,13 +101,12 @@ body {
 .btn-secondary:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.5); }
 
 /* ====================================================
-   TIMELINE (MÀU CHẤM ĐỘNG #38BDF8)
+   TIMELINE
    ==================================================== */
 .timeline { max-width: 800px; margin: 0 auto; border-left: 1px solid rgba(255, 255, 255, 0.1); padding-left: 50px; }
 .timeline-item { margin-bottom: 60px; position: relative; transition: transform 0.2s ease; cursor: pointer; }
 .timeline-item:hover { transform: translateX(5px); }
 
-/* Timeline Dot đổi màu Accent */
 .timeline-item::before {
     content: ''; position: absolute; left: -56px; top: 8px; width: 12px; height: 12px;
     background: #38bdf8; border-radius: 50%; box-shadow: 0 0 8px #38bdf8;
@@ -157,8 +152,52 @@ body {
 
 .contact-container { text-align: center; max-width: 650px; margin: 0 auto; }
 .contact-links { display: flex; justify-content: center; gap: 20px; margin-top: 50px; }
-.social-btn { padding: 18px 36px; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: 400; display: flex; align-items: center; gap: 12px; transition: transform 0.2s, color 0.2s; }
+.social-btn { padding: 18px 36px; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: 400; display: flex; align-items: center; gap: 12px; transition: transform 0.2s, color 0.2s; border: 1px solid rgba(255,255,255,0.05); }
 .social-btn:hover { transform: translateY(-2px); color: #38bdf8;}
+
+footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 50px; }
+
+/* ====================================================
+   HOVER GLASS PANEL GLOW EFFECT
+   ==================================================== */
+.glass-panel {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform, box-shadow;
+}
+.glass-panel:hover {
+    border-color: rgba(var(--accent-rgb, 56, 189, 248), 0.2) !important;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5), 
+        0 0 40px rgba(var(--accent-rgb, 56, 189, 248), 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ====================================================
+   CUSTOM MAGNETIC CURSOR DESIGN
+   ==================================================== */
+@media (min-width: 901px) {
+    body { cursor: none; }
+    a, button, .social-btn, .btn-primary, .btn-secondary, .nav-links a { cursor: none; }
+    
+    .custom-cursor {
+        width: 8px; height: 8px; background-color: var(--accent-color, #38bdf8);
+        border-radius: 50%; position: fixed; transform: translate(-50%, -50%);
+        pointer-events: none; z-index: 9999; transition: width 0.2s, height 0.2s;
+    }
+    .custom-cursor-follower {
+        width: 40px; height: 40px; border: 1px solid rgba(var(--accent-rgb, 56, 189, 248), 0.3);
+        border-radius: 50%; position: fixed; transform: translate(-50%, -50%);
+        pointer-events: none; z-index: 9998;
+        transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1), width 0.2s, height 0.2s, border-radius 0.2s, background-color 0.2s;
+    }
+    .custom-cursor.hovered { scale: 0; }
+    .custom-cursor-follower.hovered {
+        width: 50px; height: 50px; background: rgba(var(--accent-rgb, 56, 189, 248), 0.1); border-color: var(--accent-color, #38bdf8);
+    }
+    .custom-cursor-follower.magnetic {
+        border-radius: 50px; background: rgba(var(--accent-rgb, 56, 189, 248), 0.15); border-color: var(--accent-color, #38bdf8);
+    }
+}
 
 /* ====================================================
    GIAO DIỆN ĐIỆN THOẠI
@@ -196,20 +235,4 @@ body {
     .ach-small { height: auto; padding: 25px; }
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
-}
-/* --- HIỆU ỨNG PHÁT SÁNG MỜ KHI HOVER (SUBTLE GLOW EFFECT) --- */
-.glass-panel {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                border-color 0.3s ease, 
-                box-shadow 0.3s ease;
-    will-change: transform, box-shadow; /* Tối ưu hóa GPU để tăng độ mượt */
-}
-
-.glass-panel:hover {
-    border-color: rgba(var(--accent-rgb, 56, 189, 248), 0.2) !important;
-    /* Đổ bóng phát sáng nhẹ đồng bộ theo mã màu hệ thống */
-    box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.5), 
-        0 0 40px rgba(var(--accent-rgb, 56, 189, 248), 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }

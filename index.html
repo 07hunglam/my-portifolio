@@ -11,6 +11,9 @@
 </head>
 <body>
 
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
     <div class="page-transition">
         
         <div class="shape shape-1"></div>
@@ -139,32 +142,24 @@
             <div class="footer-analytics" style="font-size: 0.85rem; color: #71717a; margin-bottom: 10px; font-weight: 300; letter-spacing: 0.5px;">
                 <i class="fa-solid fa-eye" style="margin-right: 5px; color: #38bdf8;"></i> Total Views: <span id="view-counter" style="color: #a1a1aa; font-weight: 400;">Loading...</span>
             </div>
-        
-        <p>&copy; 2026 Hung Lam. All rights reserved.</p>
+            <p>&copy; 2026 Hung Lam. All rights reserved.</p>
         </footer>
     </div>
 
-
     <script>
-        // Hàm xử lý gọi API cập nhật bộ đếm lượt xem không đồng bộ
-        // Hàm xử lý gọi API cập nhật bộ đếm lượt xem (Có chống spam F5)
+        // HÀM XỬ LÝ GỌI API ĐẾM LƯỢT XEM VÀ PHÂN TÍCH CHUYÊN SÂU
         async function updateVisitorCounter() {
             try {
                 const hasVisited = sessionStorage.getItem('has_visited_hunglam_site');
-                
                 let response;
                 if (hasVisited) {
-                    // Gọi GET kèm tham số đồng bộ API Hub
                     response = await fetch('/api/counter?metric=visitor_count', { method: 'GET' });
                 } else {
-                    // Gọi POST kèm tham số đồng bộ API Hub
                     response = await fetch('/api/counter?metric=visitor_count', { method: 'POST' });
                     sessionStorage.setItem('has_visited_hunglam_site', 'true');
                 }
-
                 const data = await response.json();
                 if (data.success) {
-                    // ĐỔI TỪ data.visitor_count SANG data.value ĐỂ KHỚP VỚI BACKEND
                     document.getElementById('view-counter').textContent = Number(data.value).toLocaleString();
                 } else {
                     document.getElementById('view-counter').textContent = '---';
@@ -174,11 +169,9 @@
                 document.getElementById('view-counter').textContent = 'Offline';
             }
         }
-        // Gọi hàm thực thi ngay khi cấu trúc tài liệu sẵn sàng
-        document.addEventListener('DOMContentLoaded', updateVisitorCounter);
-        // Gọi hàm thực thi ngay khi cấu trúc tài liệu sẵn sàng
         document.addEventListener('DOMContentLoaded', updateVisitorCounter);
 
+        // HIỆU ỨNG HIỂN THỊ KHI CUỘN TRANG (SCROLL ANIMATION)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -186,19 +179,16 @@
                 }
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }); 
-
         document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
 
-       const navbar = document.querySelector('.navbar');
+        // HIỆU ỨNG BLUR NAVBAR KHI CUỘN SỐNG TRANG
+        const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 40) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled'); // Khôi phục trạng thái transparent khi lên đỉnh trang
-            }
+            if (window.scrollY > 40) { navbar.classList.add('scrolled'); } 
+            else { navbar.classList.remove('scrolled'); }
         }, { passive: true });
 
-        // Tối ưu Nav Indicator dùng cssText để giảm reflow trình duyệt
+        // NAVBAR INDICATOR HOVER TRACKING
         if (window.innerWidth > 900) {
             const navLinks = document.querySelectorAll('.nav-links li');
             const indicator = document.querySelector('.nav-indicator');
@@ -208,19 +198,60 @@
                 link.addEventListener('mouseenter', () => {
                     const rect = link.getBoundingClientRect();
                     const parentRect = navMenu.getBoundingClientRect();
-                    // Set hàng loạt để tối ưu GPU
                     indicator.style.cssText = `
-                        width: ${rect.width}px;
-                        height: ${rect.height}px;
-                        left: ${rect.left - parentRect.left}px;
-                        top: ${rect.top - parentRect.top}px;
-                        opacity: 1;
-                        transform: scale(1);
+                        width: ${rect.width}px; height: ${rect.height}px;
+                        left: ${rect.left - parentRect.left}px; top: ${rect.top - parentRect.top}px;
+                        opacity: 1; transform: scale(1);
                     `;
                 });
             });
             navMenu.addEventListener('mouseleave', () => {
                 indicator.style.cssText = `opacity: 0; transform: scale(0.8);`;
+            });
+        }
+
+        // ĐIỀU KHIỂN CON TRỎ CHUỘT NAM CHÂM TRÊN ĐỂ BÀN (DESKTOP)
+        if (window.innerWidth > 900) {
+            const cursor = document.querySelector('.custom-cursor');
+            const follower = document.querySelector('.custom-cursor-follower');
+            const magneticElements = document.querySelectorAll('.social-btn, .btn-secondary, .btn-primary, .nav-links a');
+
+            let mouseX = 0, mouseY = 0;
+            let isMagnetic = false;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+                if (!isMagnetic) {
+                    follower.style.left = mouseX + 'px'; follower.style.top = mouseY + 'px';
+                }
+            });
+
+            magneticElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hovered'); follower.classList.add('hovered');
+                    if(el.classList.contains('glass-panel') || el.classList.contains('social-btn') || el.classList.contains('btn-primary')) {
+                        isMagnetic = true; follower.classList.add('magnetic');
+                        const rect = el.getBoundingClientRect();
+                        follower.style.left = (rect.left + rect.width / 2) + 'px';
+                        follower.style.top = (rect.top + rect.height / 2) + 'px';
+                        follower.style.width = rect.width + 'px'; follower.style.height = rect.height + 'px';
+                    }
+                });
+                el.addEventListener('mousemove', (e) => {
+                    if (isMagnetic) {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - (rect.left + rect.width / 2);
+                        const y = e.clientY - (rect.top + rect.height / 2);
+                        el.style.transform = `translate3d(${x * 0.2}px, ${y * 0.2}px, 0) scale(1.02)`;
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hovered'); follower.classList.remove('hovered');
+                    isMagnetic = false; follower.classList.remove('magnetic');
+                    follower.style.width = '40px'; follower.style.height = '40px';
+                    el.style.transform = '';
+                });
             });
         }
     </script>
