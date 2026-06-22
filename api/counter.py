@@ -1,8 +1,6 @@
 import os
 import psycopg2
-import json
-import urllib.parse
-import urllib.request
+import requests
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -10,12 +8,12 @@ app = Flask(__name__)
 def get_db_connection():
     return psycopg2.connect(os.environ.get('DATABASE_URL'))
 
-# Hàm gửi báo cáo ngầm qua Telegram Bot API (Đã tối ưu hóa payload & headers)
+# Hàm gửi báo cáo ngầm qua Telegram Bot API (Nâng cấp lên thư viện requests)
 def send_telegram_report(current_views, environment):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
     
-    # Nếu chưa cấu hình đủ biến môi trường trên Vercel thì bỏ qua không gửi
+    # Nếu chưa cấu hình đủ biến môi trường trên Vercel thì bỏ qua
     if not bot_token or not chat_id:
         return
 
@@ -36,33 +34,20 @@ def send_telegram_report(current_views, environment):
     }
     
     try:
-        # Ép kiểu dữ liệu sang dạng bytes chuỗi mã hóa UTF-8 chuẩn xác
-        data = json.dumps(payload).encode('utf-8')
-        
-        # Thiết kế đầy đủ Headers bao gồm Content-Length để bypass bộ lọc Telegram
-        req = urllib.request.Request(
-            url, 
-            data=data, 
-            headers={
-                'Content-Type': 'application/json',
-                'Content-Length': str(len(data)),
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-            },
-            method='POST' # Ép phương thức gửi đi bắt buộc là POST
-        )
-        with urllib.request.urlopen(req, timeout=5) as response:
-            response.read() # Đọc phản hồi ngầm để giải phóng kết nối
+        # Sử dụng requests.post giúp tự động xử lý gói tin và phân giải DNS IPv4/IPv6 chuẩn xác
+        response = requests.post(url, json=payload, timeout=5)
+        # Nếu Telegram trả về lỗi (ví dụ sai token/id), dòng này sẽ in log ra Vercel Logs để kiểm tra
+        if response.status_code != 200:
+            print(f"Telegram API Error: {response.text}")
     except Exception as e:
-        print(f"Failed to send Telegram notification: {str(e)}")
+        print(f"Failed to send Telegram notification due to network error: {str(e)}")
 
 @app.route('/api/counter', methods=['GET', 'POST'])
 def handle_analytics():
-    # Tự động cách ly môi trường (Ý tưởng 3)
-    # Vercel sẽ tự định nghĩa VERCEL_ENV là 'production' trên cloud thật.
+    # Tự động cách ly môi trường
     is_production = os.environ.get('VERCEL_ENV') == 'production'
     environment_name = "Production" if is_production else "Local-Dev"
     
-    # Trỏ đúng metric đích: Prod dùng 'visitor_count', Local dùng 'dev_visitor_count'
     metric = 'visitor_count' if is_production else 'dev_visitor_count'
 
     conn = None
@@ -71,7 +56,6 @@ def handle_analytics():
         cursor = conn.cursor()
         
         if request.method == 'POST':
-            # Thực hiện tăng biến đếm nguyên tử trong database
             cursor.execute("""
                 INSERT INTO site_analytics (metric_name, value) 
                 VALUES (%s, 1)
@@ -82,10 +66,9 @@ def handle_analytics():
             new_count = cursor.fetchone()[0]
             conn.commit()
             
-            # Kích hoạt gửi báo cáo sang Telegram cho MỖI lượt xem tăng lên (Ý tưởng 1)
+            # Kích hoạt gửi báo cáo sang Telegram
             send_telegram_report(new_count, environment_name)
         else:
-            # Nếu gọi bằng GET: Chỉ đọc giá trị hiện tại, không làm tăng số
             cursor.execute("SELECT value FROM site_analytics WHERE metric_name = %s;", (metric,))
             result = cursor.fetchone()
             new_count = result[0] if result else 0
