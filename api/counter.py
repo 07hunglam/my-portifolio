@@ -18,11 +18,12 @@ def send_telegram_report(current_views, environment):
         return
 
     # Soạn nội dung tin nhắn dạng Markdown
+   # Sửa lại định dạng ghép chuỗi chuẩn Python
     message_text = (
         f"📊 *[PORTFOLIO ANALYTICS]*\n\n"
-        f"🚀 *Cột mốc mới:* {current_views} lượt xem!\n"
-        f"🌐 *Môi trường:* `{environment}`\n\n"
-        f"🔥 _Keep moving forward, Lam!_"
+        "🚀 *Cột mốc mới:* {current_views} lượt xem!\n"
+        "🌐 *Môi trường:* `{environment}`\n\n"
+        "🔥 _Keep moving forward, Lam!_"
     )
     
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
