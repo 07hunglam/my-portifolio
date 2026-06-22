@@ -13,8 +13,6 @@ def get_db_connection():
 # Hàm gửi báo cáo ngầm qua Telegram Bot API
 def send_telegram_report(current_views, environment):
     # Chỉ nhắn tin khi số view đạt các mốc chẵn chia hết cho 10 để tránh spam
-    if current_views % 10 != 0:
-        return
         
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
