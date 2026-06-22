@@ -108,6 +108,10 @@
     </style>
 </head>
 <body>
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
+    <div class="progress-container">
 
     <div class="progress-container">
         <div class="progress-bar" id="readingProgress"></div>
@@ -261,6 +265,49 @@
             const scrolled = (winScroll / height) * 100;
             document.getElementById('readingProgress').style.width = scrolled + '%';
         }, { passive: true });
+        // ĐIỀU KHIỂN CON TRỎ CHUỘT NAM CHÂM TRÊN TRANG ABOUT
+        if (window.innerWidth > 900) {
+            const cursor = document.querySelector('.custom-cursor');
+            const follower = document.querySelector('.custom-cursor-follower');
+            // Thêm các mục tiêu hút nam châm trên trang About (nút Back Home, các vòng tròn đổi màu)
+            const magneticElements = document.querySelectorAll('.back-nav a, .swatch-container');
+
+            let mouseX = 0, mouseY = 0;
+            let isMagnetic = false;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+                if (!isMagnetic) {
+                    follower.style.left = mouseX + 'px'; follower.style.top = mouseY + 'px';
+                }
+            });
+
+            magneticElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hovered'); follower.classList.add('hovered');
+                    isMagnetic = true; follower.classList.add('magnetic');
+                    const rect = el.getBoundingClientRect();
+                    follower.style.left = (rect.left + rect.width / 2) + 'px';
+                    follower.style.top = (rect.top + rect.height / 2) + 'px';
+                    follower.style.width = rect.width + 'px'; follower.style.height = rect.height + 'px';
+                });
+                el.addEventListener('mousemove', (e) => {
+                    if (isMagnetic) {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - (rect.left + rect.width / 2);
+                        const y = e.clientY - (rect.top + rect.height / 2);
+                        el.style.transform = `translate3d(${x * 0.2}px, ${y * 0.2}px, 0) scale(1.02)`;
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hovered'); follower.classList.remove('hovered');
+                    isMagnetic = false; follower.classList.remove('magnetic');
+                    follower.style.width = '40px'; follower.style.height = '40px';
+                    el.style.transform = '';
+                });
+            });
+        }
     </script>
 </body>
 </html>
