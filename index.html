@@ -254,6 +254,20 @@
                 });
             });
         }
+        // XỬ LÝ ẨN/HIỆN NÚT CUỘN LÊN ĐẦU TRANG KHI CUỘN QUA VÙNG HERO
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            // Khi cuộn xuống quá 400px thì nút xuất hiện, ngược lại thì ẩn đi
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        }, { passive: true });
     </script>
+    <a href="#about" class="back-to-top" id="backToTop">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
 </body>
 </html>

@@ -236,3 +236,54 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
 }
+/* --- NÚT CUỘN LÊN ĐẦU TRANG SMART BACK-TO-TOP --- */
+.back-to-top {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(20, 21, 26, 0.7); /* Lớp nền kính mờ nhẹ */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hiển thị khi người dùng cuộn xuống */
+.back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.back-to-top i {
+    font-size: 0.95rem;
+    transition: transform 0.3s;
+}
+
+/* Hiệu ứng nhích nhẹ mũi tên lên khi di chuột vào */
+.back-to-top:hover i {
+    transform: translateY(-3px);
+    color: var(--accent-color, #38bdf8);
+}
+
+/* Tối ưu hiển thị trên điện thoại */
+@media (max-width: 900px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+    }
+}
