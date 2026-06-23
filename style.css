@@ -279,11 +279,117 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
 }
 
 /* Tối ưu hiển thị trên điện thoại */
+/* ====================================================
+   GIAO DIỆN ĐIỆN THOẠI NÂNG CẤP (APP-LIKE EXPERIENCE)
+   ==================================================== */
 @media (max-width: 900px) {
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
+    .shape { display: none !important; }
+
+    /* --- Ý TƯỞNG 1: THANH ĐIỀU HƯỚNG ĐÁY (BOTTOM TAB BAR) --- */
+    .navbar {
+        top: auto !important;
+        bottom: 20px !important; /* Neo xuống đáy màn hình, nổi lên 20px */
+        left: 5vw;
+        width: 90vw;
+        padding: 0 !important;
+        flex-direction: row; 
+        border-radius: 20px;
+        background: rgba(2, 3, 5, 0.85) !important;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+    }
+    .nav-logo { display: none; } /* Ẩn logo để nhường chỗ cho Tab Bar */
+    .nav-indicator { display: none !important; }
+
+    /* --- Ý TƯỞNG 4: MẶT NẠ MỜ DẦN 2 BÊN VIỀN (FADE-OUT MASK) --- */
+    .nav-links {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 12px 15px;
+        gap: 12px;
+        scrollbar-width: none;
+        /* Áp dụng Mask mờ dần ở mép trái và mép phải */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links li { flex-shrink: 0; }
+    .nav-links a {
+        display: block;
+        padding: 10px 22px;
+        font-size: 0.9rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    /* Đẩy vùng Hero xuống vì navbar không còn chiếm chỗ phía trên */
+    .hero { padding-top: 60px; padding-bottom: 50px; }
+    .hero h1 { font-size: 3.2rem; }
+    .tagline span { display: block; margin-bottom: 5px; }
+    .tagline .accent-dot { display: none; }
+    .personal-info-card { width: 100%; margin: 0 auto 40px; padding: 25px 20px; box-sizing: border-box; }
+    .personal-info-card li { font-size: 0.9rem; margin-bottom: 12px; word-wrap: break-word; }
+    .personal-info-card li strong { display: inline-block; width: auto; min-width: 90px; color: #38bdf8; margin-right: 5px; }
+    .personal-info-card i { display: none; }
+    .hero-buttons { flex-direction: column; width: 100%; padding: 0 5%; gap: 15px; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; font-size: 0.95rem; }
+
+    .section { padding: 80px 5%; }
+    .section-title { font-size: 2.2rem; margin-bottom: 40px; }
+    .timeline { padding-left: 20px; }
+    .timeline-item::before { left: -26.5px; width: 10px; height: 10px; }
+    .timeline-item h3 { font-size: 1.2rem; }
+
+    /* --- Ý TƯỞNG 2 & 4: CUỘN KHỚP CẠNH (SNAP SCROLL) CHO KHỐI THÀNH TỰU --- */
+    .achievements-grid {
+        display: flex !important;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory; /* Bật chế độ hút dính */
+        scroll-padding: 0 5%;
+        gap: 15px;
+        padding-bottom: 20px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Áp dụng Mask mờ dần ở mép viền để nhìn giống Story UI */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+    }
+    .achievements-grid::-webkit-scrollbar { display: none; }
+    
+    .achievement-card {
+        min-width: 85vw; /* Thẻ rộng gần bằng màn hình */
+        scroll-snap-align: center; /* Hút dính vào giữa màn hình */
+        flex-shrink: 0;
+        height: auto;
+        padding: 30px 25px;
+    }
+    .ach-large .ach-icon { font-size: 2.5rem; margin-bottom: 15px; }
+    .ach-large h3 { font-size: 1.8rem; }
+    .ach-small .ach-icon { font-size: 1.8rem; margin-bottom: 15px; }
+
+    .contact-links { flex-direction: column; gap: 15px; }
+    .social-btn { width: 100%; justify-content: center; }
+
+    /* Nâng nút cuộn lên cao hơn một chút để tránh đè vào Tab Bar ở đáy */
+    .back-to-top { bottom: 100px; right: 20px; width: 40px; height: 40px; }
+
+    /* --- Ý TƯỞNG 3: PHẢN HỒI CHẠM VẬT LÝ (HAPTIC TOUCH MICRO-INTERACTIONS) --- */
+    /* Khi ngón tay ấn vào nút, nút sẽ lún nhẹ xuống 5% */
+    .btn-primary:active, 
+    .btn-secondary:active, 
+    .social-btn:active, 
+    .achievement-card:active, 
+    .nav-links a:active {
+        transform: scale(0.95) !important;
+        transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: brightness(0.85);
     }
 }
