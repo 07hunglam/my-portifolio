@@ -285,12 +285,21 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
 @media (max-width: 900px) {
     .shape { display: none !important; }
 
+    .page-transition { 
+        display: flex; 
+        flex-direction: column;
+    }
+
     /* --- Ý TƯỞNG 1: THANH ĐIỀU HƯỚNG ĐÁY (BOTTOM TAB BAR) --- */
     .navbar {
+        order: 2; /* Ép Navbar nằm ngay dưới khối Hero */
+        position: relative !important; /* Gỡ bỏ ghim cố định */
         top: auto !important;
-        bottom: 20px !important; /* Neo xuống đáy màn hình, nổi lên 20px */
-        left: 5vw;
-        width: 90vw;
+        bottom: auto !important;
+        left: auto !important;
+        margin: 10px auto 60px auto !important; /* Căn giữa, cách trên 10px, cách dưới 60px */
+        width: 90vw !important;
+        /* Giữ nguyên lớp kính mờ */
         padding: 0 !important;
         flex-direction: row; 
         border-radius: 20px;
@@ -301,6 +310,11 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         z-index: 1000;
     }
+    #education { order: 3; }
+    #experience { order: 4; }
+    #achievements { order: 5; }
+    #contact { order: 6; }
+    footer { order: 7; }
     .nav-logo { display: none; } /* Ẩn logo để nhường chỗ cho Tab Bar */
     .nav-indicator { display: none !important; }
 
@@ -330,7 +344,7 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
     }
 
     /* Đẩy vùng Hero xuống vì navbar không còn chiếm chỗ phía trên */
-    .hero { padding-top: 60px; padding-bottom: 50px; }
+    .hero { order: 1; padding-top: 100px; padding-bottom: 20px; min-height: auto; }
     .hero h1 { font-size: 3.2rem; }
     .tagline span { display: block; margin-bottom: 5px; }
     .tagline .accent-dot { display: none; }
@@ -348,21 +362,39 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
     .timeline-item h3 { font-size: 1.2rem; }
 
     /* --- Ý TƯỞNG 2 & 4: CUỘN KHỚP CẠNH (SNAP SCROLL) CHO KHỐI THÀNH TỰU --- */
+    /* --- CUỘN KHỚP CẠNH (SNAP SCROLL) KÈM THANH CUỘN TRỰC QUAN --- */
     .achievements-grid {
         display: flex !important;
         flex-wrap: nowrap;
         overflow-x: auto;
-        scroll-snap-type: x mandatory; /* Bật chế độ hút dính */
+        scroll-snap-type: x mandatory;
         scroll-padding: 0 5%;
         gap: 15px;
         padding-bottom: 20px;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        /* Áp dụng Mask mờ dần ở mép viền để nhìn giống Story UI */
+        
+        /* Hiển thị thanh cuộn mỏng tinh tế trên Firefox */
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent-color, #38bdf8) rgba(255, 255, 255, 0.05);
+        
         -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
         mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
     }
-    .achievements-grid::-webkit-scrollbar { display: none; }
+    
+    /* Thiết kế thanh cuộn riêng cho Chrome / Safari / Edge / iOS */
+    .achievements-grid::-webkit-scrollbar { 
+        display: block !important; /* Ghi đè lệnh ẩn trước đó */
+        height: 4px; /* Độ dày siêu mỏng chuẩn Apple */
+    }
+    .achievements-grid::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05); /* Nền track mờ nhẹ */
+        border-radius: 10px;
+        margin: 0 5%; /* Thụt lùi vào 2 mép cho đẹp mắt */
+    }
+    .achievements-grid::-webkit-scrollbar-thumb {
+        background: var(--accent-color, #38bdf8); /* Dùng màu neon đồng bộ hệ thống */
+        border-radius: 10px;
+    }
     
     .achievement-card {
         min-width: 85vw; /* Thẻ rộng gần bằng màn hình */
