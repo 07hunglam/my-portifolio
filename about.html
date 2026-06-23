@@ -10,6 +10,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- Ý TƯỞNG 1: LỚP NHIỄU HẠT PHIM CỔ ĐIỂN (CINEMATIC FILM GRAIN) --- */
+        .film-grain {
+            position: fixed;
+            top: -150%;
+            left: -150%;
+            width: 300%;
+            height: 300%;
+            /* Sử dụng thuật toán nhiễu SVG tàng hình (Fractal Noise) */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.06; /* Độ mờ tinh tế, không làm nát ảnh gốc */
+            pointer-events: none; /* Tuyệt đối quan trọng: Cho phép chuột bấm xuyên qua lớp nhiễu */
+            z-index: 9997; /* Nằm trên nội dung, nhưng dưới thanh tiến trình và con trỏ chuột */
+            animation: grain-jitter 8s steps(10) infinite;
+            mix-blend-mode: overlay; /* Hòa trộn ánh sáng vào nền tối */
+        }
+
+        /* Thuật toán giật khung hình ngẫu nhiên mô phỏng máy chiếu phim cổ */
+        @keyframes grain-jitter {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            20% { transform: translate(-15%, 5%); }
+            30% { transform: translate(7%, -25%); }
+            40% { transform: translate(-5%, 25%); }
+            50% { transform: translate(-15%, 10%); }
+            60% { transform: translate(15%, 0%); }
+            70% { transform: translate(0%, 15%); }
+            80% { transform: translate(3%, 35%); }
+            90% { transform: translate(-10%, 10%); }
+        }
+
         :root {
             --accent-color: #38bdf8;
             --accent-rgb: 56, 189, 248;
@@ -129,6 +159,9 @@
     </style>
 </head>
 <body>
+    <div class="film-grain"></div>
+
+
     <div class="custom-cursor"></div>
     <div class="custom-cursor-follower"></div>
 
