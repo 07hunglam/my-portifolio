@@ -291,23 +291,29 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
     }
 
     /* --- Ý TƯỞNG 1: THANH ĐIỀU HƯỚNG ĐÁY (BOTTOM TAB BAR) --- */
+    /* --- HIỆU ỨNG LIQUID GLASS CHO NAVBAR --- */
     .navbar {
-        order: 2; /* Ép Navbar nằm ngay dưới khối Hero */
-        position: relative !important; /* Gỡ bỏ ghim cố định */
+        order: 2;
+        position: relative !important;
         top: auto !important;
         bottom: auto !important;
         left: auto !important;
-        margin: 10px auto 60px auto !important; /* Căn giữa, cách trên 10px, cách dưới 60px */
+        margin: 10px auto 60px auto !important;
         width: 90vw !important;
-        /* Giữ nguyên lớp kính mờ */
         padding: 0 !important;
         flex-direction: row; 
         border-radius: 20px;
-        background: rgba(2, 3, 5, 0.85) !important;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        
+        /* Chìa khóa Liquid Glass: Nền cực trong, Blur cực mạnh */
+        background: rgba(10, 12, 16, 0.35) !important;
+        backdrop-filter: blur(35px) saturate(200%);
+        -webkit-backdrop-filter: blur(35px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        /* Thêm ánh sáng lồi (inset) bóng bẩy như giọt nước */
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.4), 
+            inset 0 1px 1px rgba(255, 255, 255, 0.15), 
+            inset 0 -1px 1px rgba(255, 255, 255, 0.02);
         z-index: 1000;
     }
     #education { order: 3; }
@@ -361,51 +367,46 @@ footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255
     .timeline-item::before { left: -26.5px; width: 10px; height: 10px; }
     .timeline-item h3 { font-size: 1.2rem; }
 
-    /* --- Ý TƯỞNG 2 & 4: CUỘN KHỚP CẠNH (SNAP SCROLL) CHO KHỐI THÀNH TỰU --- */
-    /* --- CUỘN KHỚP CẠNH (SNAP SCROLL) KÈM THANH CUỘN TRỰC QUAN --- */
+    /* --- TỐI ƯU HIỂN THỊ THẺ MILESTONES (DỄ NHÌN, CÂN ĐỐI) --- */
     .achievements-grid {
         display: flex !important;
         flex-wrap: nowrap;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
-        scroll-padding: 0 5%;
-        gap: 15px;
-        padding-bottom: 20px;
+        scroll-padding: 0 7.5vw; /* Căn chỉnh hoàn hảo để thẻ nằm chính giữa */
+        gap: 20px; /* Tăng khoảng cách không gian trống giữa các thẻ */
+        padding-bottom: 25px;
         -webkit-overflow-scrolling: touch;
-        
-        /* Hiển thị thanh cuộn mỏng tinh tế trên Firefox */
         scrollbar-width: thin;
         scrollbar-color: var(--accent-color, #38bdf8) rgba(255, 255, 255, 0.05);
-        
-        -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
-        mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     }
     
-    /* Thiết kế thanh cuộn riêng cho Chrome / Safari / Edge / iOS */
-    .achievements-grid::-webkit-scrollbar { 
-        display: block !important; /* Ghi đè lệnh ẩn trước đó */
-        height: 4px; /* Độ dày siêu mỏng chuẩn Apple */
-    }
-    .achievements-grid::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05); /* Nền track mờ nhẹ */
-        border-radius: 10px;
-        margin: 0 5%; /* Thụt lùi vào 2 mép cho đẹp mắt */
-    }
-    .achievements-grid::-webkit-scrollbar-thumb {
-        background: var(--accent-color, #38bdf8); /* Dùng màu neon đồng bộ hệ thống */
-        border-radius: 10px;
-    }
-    
+    .achievements-grid::-webkit-scrollbar { display: block !important; height: 4px; }
+    .achievements-grid::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; margin: 0 5%; }
+    .achievements-grid::-webkit-scrollbar-thumb { background: var(--accent-color, #38bdf8); border-radius: 10px; }
+
     .achievement-card {
-        min-width: 85vw; /* Thẻ rộng gần bằng màn hình */
-        scroll-snap-align: center; /* Hút dính vào giữa màn hình */
+        min-width: 75vw; /* Ép hẹp lại để thẻ tiếp theo luôn "ló" ra ở mép màn hình */
+        min-height: 230px; /* Đồng bộ chiều cao cho mọi thẻ nhìn ngăn nắp hơn */
+        scroll-snap-align: center; 
         flex-shrink: 0;
-        height: auto;
         padding: 30px 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Đẩy nội dung ra giữa trục dọc */
     }
-    .ach-large .ach-icon { font-size: 2.5rem; margin-bottom: 15px; }
-    .ach-large h3 { font-size: 1.8rem; }
-    .ach-small .ach-icon { font-size: 1.8rem; margin-bottom: 15px; }
+    
+    /* Cân đối lại tỷ lệ chữ cho vừa vặn, không bị tràn ngộp */
+    .ach-large { padding: 30px 25px; }
+    .ach-large .ach-icon { font-size: 2.2rem; margin-bottom: 15px; }
+    .ach-large h3 { font-size: 1.6rem; letter-spacing: -0.5px; }
+    .ach-large p { font-size: 0.95rem; margin-bottom: 15px; }
+    
+    .ach-small { padding: 30px 25px; }
+    .ach-small .ach-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .ach-small h3 { font-size: 1.3rem; }
 
     .contact-links { flex-direction: column; gap: 15px; }
     .social-btn { width: 100%; justify-content: center; }
