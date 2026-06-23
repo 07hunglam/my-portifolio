@@ -159,10 +159,7 @@ def handle_analytics():
             # KÍCH HOẠT LUỒNG NGẦM BẤT ĐỒNG BỘ (Ý tưởng 1):
             # Khởi tạo một Thread riêng để làm nhiệm vụ phân tích và gọi API mạng.
             # Tiến trình chính Flask lập tức đi tiếp xuống lệnh return mà không bị nghẽn lại đợi.
-            threading.Thread(
-                target=async_analytics_pipeline,
-                args=(new_count, environment_name, ip_address, ua_string, referer, metric)
-            ).start()
+            async_analytics_pipeline(new_count, environment_name, ip_address, ua_string, referer, metric)
             
             # Trả kết quả tức thì về cho Frontend (Tốc độ phản hồi < 10ms)
             return jsonify({"success": True, "environment": environment_name, "value": new_count}), 200
