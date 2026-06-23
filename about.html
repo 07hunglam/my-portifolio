@@ -67,6 +67,7 @@
             background-size: 200% 100%;
             background-position: 100% 0; /* Khởi đầu bằng màu xám */
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
             
@@ -120,7 +121,8 @@
             .grid-b { display: flex; flex-direction: column-reverse; }
             .outline-num { font-size: 8rem !important; left: -10px !important; top: -30px !important; }
             .grid-b .tag-chips { justify-content: flex-start; }
-            .grid-b .pull-quote { border-right: none; border-left: 4px solid var(--accent-color); padding-right: 0; padding-left: 30px; }
+            .grid-b .pull-quote { border-right: none; border-left: 4px solid rgba(255, 255, 255, 0.1); padding-right: 0; padding-left: 30px; }
+            .grid-b .pull-quote.show { border-left-color: var(--accent-color); }
             .img-wrapper { height: 40vh !important; }
             .back-nav { top: 20px; left: 20px; }
         }
@@ -177,7 +179,7 @@
                         <span class="tag-chip">Rationality</span>
                         <span class="tag-chip">C++ Architecture</span>
                     </div>
-                    <div class="pull-quote">"Focus only on what can be controlled."</div>
+                    <div class="pull-quote scroll-animate" style="--delay: 0.3s">"Focus only on what can be controlled."</div>
                     <p class="magazine-text">Grounding every action—from debugging complex architectures to interpreting life's chaos—in the rigid principles of Stoicism. The mind is a compiler. It reads the raw inputs of reality, strips away the noise of emotion, and executes only the necessary logic.</p>
                 </div>
             </div>
@@ -190,7 +192,7 @@
                         <span class="tag-chip">Earth Tones</span>
                         <span class="tag-chip">Unbranded</span>
                     </div>
-                    <div class="pull-quote">"Silence in colors. Loud in structure."</div>
+                    <div class="pull-quote scroll-animate" style="--delay: 0.3s">"Silence in colors. Loud in structure."</div>
                     <p class="magazine-text">A preference for oversized silhouettes, earth tones, and unbranded functional pieces. Fashion is not a display, but a sharp, consistent visual language in everyday wear.</p>
                 </div>
                 <div class="img-wrapper parallax" data-speed="-10">
